@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>How the Features Stage Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0d0f14;--bg2:#13161e;--bg3:#1b1f2a;
+    --border:#252a38;--border2:#2e3447;
+    --text:#e8eaf0;--text2:#9aa0b4;--text3:#5c6278;
+    --accent:#4f7cff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+    --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--display:'Fraunces',Georgia,serif;
+  }
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:36px 20px 80px}
+  .wrap{max-width:840px;margin:0 auto}
+  h1{font-family:var(--display);font-weight:300;font-size:1.85rem;letter-spacing:-.02em;text-align:center}
+  h1 b{font-weight:700;color:var(--accent)}
+  .sub{text-align:center;color:var(--text2);font-size:.9rem;margin:8px 0 8px}
+  .intro{text-align:center;color:var(--text3);font-size:.84rem;max-width:600px;margin:0 auto 24px}
+
+  .ing{background:var(--bg2);border:1px solid var(--border);border-left-width:4px;border-radius:12px;padding:16px 18px;margin-bottom:14px}
+  .ih{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+  .ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+  .ico svg{width:21px;height:21px;color:#0d0f14}
+  .it{font-family:var(--display);font-weight:700;font-size:1.08rem}
+  .iq{margin-left:auto;font-size:.74rem;color:var(--text3)}
+  .ing p{font-size:.84rem;color:var(--text2);margin-bottom:9px}
+
+  /* formula box */
+  .formula{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:11px 14px;font-family:var(--mono);font-size:.82rem;color:var(--text);text-align:center;margin-bottom:6px}
+  .formula b{color:var(--accent)}
+  .needboth{text-align:center;font-size:.74rem;color:var(--amber);margin-bottom:10px}
+
+  /* two-col */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:620px){.cols{grid-template-columns:1fr}}
+
+  /* decay curve */
+  .decay{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px}
+  .decay .dh{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:6px}
+  .decay svg{width:100%;height:78px}
+  .decay .dl{font-size:.68rem;color:var(--text3);font-family:var(--mono);display:flex;justify-content:space-between;margin-top:2px}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:.76rem}
+  th{text-align:left;color:var(--text3);font-weight:600;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;padding:4px 6px;border-bottom:1px solid var(--border2)}
+  td{padding:4px 6px;border-bottom:1px solid var(--border);color:var(--text2)}
+  td.m{font-family:var(--mono);color:var(--text)}
+  tr:last-child td{border-bottom:none}
+
+  /* stacked components */
+  .comp{display:flex;height:30px;border-radius:6px;overflow:hidden;margin-bottom:6px;border:1px solid var(--border2)}
+  .comp div{display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;color:#0d0f14}
+  .c-icp{background:var(--green)} .c-named{background:var(--accent)} .c-size{background:var(--purple)} .c-intent{background:var(--amber)}
+
+  /* segment table highlight */
+  .seg-hi{color:var(--green);font-weight:600}
+
+  /* ladders */
+  .ladder{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px}
+  .ladder .lh{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:7px}
+  .lrow{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .lrow .ln{min-width:130px;font-size:.74rem;color:var(--text2)}
+  .lbar{height:11px;border-radius:3px;background:var(--purple)}
+  .lrow .lv{font-family:var(--mono);font-size:.7rem;color:var(--text)}
+  .zero .lbar{background:var(--red)}
+
+  .callout{background:rgba(79,124,255,.07);border-left:3px solid var(--accent);border-radius:0 7px 7px 0;padding:9px 12px;font-size:.78rem;color:var(--text2);margin-top:10px}
+  .callout b{color:var(--accent)}
+
+  /* assembly */
+  .asm{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-top:6px}
+  .asm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media(max-width:620px){.asm-grid{grid-template-columns:1fr}}
+  .ak{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:11px 13px}
+  .ak .akh{font-family:var(--mono);font-size:.74rem;color:var(--accent);margin-bottom:4px}
+  .ak .akd{font-size:.78rem;color:var(--text2)}
+  .ak.share{border-color:rgba(34,197,94,.3)} .ak.share .akh{color:var(--green)}
+
+  .sec-h{font-family:var(--display);font-size:1.15rem;text-align:center;margin:30px 0 4px}
+  .why{background:rgba(34,197,94,.07);border:1px solid var(--border2);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:14px 18px;margin-top:16px;font-size:.86rem;color:var(--text2)}
+  .why b{color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>How the <b>Features Stage</b> Works</h1>
+  <p class="sub"><code style="font-family:var(--mono);color:var(--text2);font-size:.85rem">02_features.py</code> — turning clean data into three measured ingredients</p>
+  <p class="intro">Every person comes out with three signals the scorer will blend: <b>engagement</b>, <b>account fit</b>, <b>profile fit</b>.</p>
+
+  <!-- ENGAGEMENT -->
+  <div class="ing" style="border-left-color:var(--accent)">
+    <div class="ih"><div class="ico" style="background:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l5-5 4 4 8-8"/><path d="M16 8h4v4"/></svg></div><div class="it">1 · Engagement</div><div class="iq">how recently &amp; genuinely active</div></div>
+    <p>Only genuine actions count (automated "Sent" thrown out). Each channel scored, then <b>summed</b>.</p>
+    <div class="formula">channel = <b>weight</b> × <b>recency</b>(freshest event) × <b>volume</b>(count ÷ cap)</div>
+    <div class="needboth">▲ multiplied — you need BOTH recent AND repeated, or it's near zero</div>
+    <div class="cols">
+      <div class="decay">
+        <div class="dh">30-day half-life decay</div>
+        <svg viewBox="0 0 200 78" fill="none" preserveAspectRatio="none">
+          <polyline points="0,8 50,43 100,60 150,69 200,73" stroke="#4f7cff" stroke-width="2"/>
+          <line x1="0" y1="43" x2="50" y2="43" stroke="#2e3447" stroke-width="1" stroke-dasharray="3 3"/>
+          <circle cx="0" cy="8" r="2.5" fill="#4f7cff"/><circle cx="50" cy="43" r="2.5" fill="#4f7cff"/><circle cx="100" cy="60" r="2.5" fill="#4f7cff"/>
+        </svg>
+        <div class="dl"><span>now=100%</span><span>30d=50%</span><span>90d=12%</span></div>
+      </div>
+      <div>
+        <table>
+          <tr><th>Channel</th><th>weight</th><th>cap</th></tr>
+          <tr><td>Event</td><td class="m">0.30</td><td class="m">3</td></tr>
+          <tr><td>Webinar</td><td class="m">0.25</td><td class="m">5</td></tr>
+          <tr><td>Content Synd.</td><td class="m">0.20</td><td class="m">5</td></tr>
+          <tr><td>Telemarketing</td><td class="m">0.10</td><td class="m">5</td></tr>
+          <tr><td>Email</td><td class="m">0.10</td><td class="m">10</td></tr>
+          <tr><td>Advertisement</td><td class="m">0.05</td><td class="m">10</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="callout"><b>Plus a separate detector:</b> automation_share = automated ÷ all events. Above 70% → flagged inflated (an overlay, not a score cut). Recency uses only the freshest event per channel; older ones still help volume.</div>
+  </div>
+
+  <!-- ACCOUNT FIT -->
+  <div class="ing" style="border-left-color:var(--green)">
+    <div class="ih"><div class="ico" style="background:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M9 16h6"/></svg></div><div class="it">2 · Account fit</div><div class="iq">how good is the company</div></div>
+    <p>Four sub-signals add to a raw score (max 100) — <b>ICP dominates at half</b>. Leads with no account fall back to ZoomInfo enrichment.</p>
+    <div class="comp">
+      <div class="c-icp" style="width:50%">ICP 50</div>
+      <div class="c-named" style="width:25%">Named 25</div>
+      <div class="c-size" style="width:15%">Size 15</div>
+      <div class="c-intent" style="width:10%">Int 10</div>
+    </div>
+    <p style="margin-top:10px">Then <b>× a data-source trust multiplier</b> (the segment) — based on how reliable the data is, <b>never MQL</b> (the anti-circularity move):</p>
+    <table>
+      <tr><th>Segment</th><th>meaning</th><th>×</th><th>count</th></tr>
+      <tr><td class="seg-hi">C1</td><td>contact w/ lead origin (full history)</td><td class="m">1.00</td><td class="m seg-hi">162</td></tr>
+      <tr><td>L1</td><td>lead matched to an account</td><td class="m">0.90</td><td class="m">507</td></tr>
+      <tr><td>L2 / C2</td><td>no match, has enrichment</td><td class="m">0.55</td><td class="m">67 / 199</td></tr>
+      <tr><td>L3 / C3</td><td>no match, no enrichment</td><td class="m">0.45</td><td class="m">26 / 39</td></tr>
+    </table>
+    <div class="callout"><b>C1 = 162</b> is exactly your connected pairs. <b>L1 = 507</b> means ~85% of leads matched an account — the other ~15% are the no-account DQ records.<br/>Real example — <b>L00014:</b> ICP 50 + Named 25 + (0.65×15)=9.8 + (57÷100×10)=5.7 = <b>90.5</b> × L1 0.90 = <b>81.4</b></div>
+  </div>
+
+  <!-- PROFILE FIT -->
+  <div class="ing" style="border-left-color:var(--purple)">
+    <div class="ih"><div class="ico" style="background:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 17c0-1.7 1.3-3 3-3s3 1.3 3 3M14 9h5M14 13h5"/></svg></div><div class="it">3 · Profile fit</div><div class="iq">how senior &amp; relevant</div></div>
+    <p>Two ladders, then averaged.</p>
+    <div class="cols">
+      <div class="ladder">
+        <div class="lh">Job level</div>
+        <div class="lrow"><span class="ln">C-Level</span><div class="lbar" style="width:100%"></div><span class="lv">1.0</span></div>
+        <div class="lrow"><span class="ln">VP</span><div class="lbar" style="width:85%"></div><span class="lv">.85</span></div>
+        <div class="lrow"><span class="ln">Director</span><div class="lbar" style="width:70%"></div><span class="lv">.70</span></div>
+        <div class="lrow"><span class="ln">Manager</span><div class="lbar" style="width:50%"></div><span class="lv">.50</span></div>
+        <div class="lrow"><span class="ln">Indiv. Contributor</span><div class="lbar" style="width:30%"></div><span class="lv">.30</span></div>
+      </div>
+      <div class="ladder">
+        <div class="lh">Persona</div>
+        <div class="lrow"><span class="ln">CISO</span><div class="lbar" style="width:100%"></div><span class="lv">1.0</span></div>
+        <div class="lrow"><span class="ln">Technical Buyer</span><div class="lbar" style="width:85%"></div><span class="lv">.85</span></div>
+        <div class="lrow"><span class="ln">Financial Buyer</span><div class="lbar" style="width:70%"></div><span class="lv">.70</span></div>
+        <div class="lrow"><span class="ln">Influencer</span><div class="lbar" style="width:50%"></div><span class="lv">.50</span></div>
+        <div class="lrow zero"><span class="ln">Non-Prospect</span><div class="lbar" style="width:5%"></div><span class="lv">0.0</span></div>
+      </div>
+    </div>
+    <div class="callout"><b>Fairness mechanic:</b> missing values are filled with the <b>median of that person's own entity type</b> (not the global mean), floor 0.30. In your data that's a lot — persona was blank for <b>248 leads (~41%)</b> and <b>152 contacts (~38%)</b>. Non-Prospects map to a real 0.0, so they're never imputed.</div>
+  </div>
+
+  <!-- ASSEMBLY -->
+  <h2 class="sec-h">Assembly — the keys that matter</h2>
+  <div class="asm">
+    <p style="font-size:.84rem;color:var(--text2)">The merge keys are the clever bit — they decide what's shared vs per-record:</p>
+    <div class="asm-grid">
+      <div class="ak share"><div class="akh">engagement → scoring_person_id</div><div class="akd">A connected lead + contact share the <b>same merged engagement</b> (one human's activity).</div></div>
+      <div class="ak"><div class="akh">account &amp; profile → record_id</div><div class="akd">Each record keeps its <b>own</b> account &amp; profile fit (lead may be L3, its contact C1).</div></div>
+    </div>
+    <div class="callout" style="margin-top:12px">So a pair has <b>identical engagement but different fit</b> — exactly what lets the later "promotion" step lift the contact using the lead's signal without losing its better firmographics. (People with no history get engagement = 0, never dropped.)</div>
+  </div>
+
+  <h2 class="sec-h">Why build it this way?</h2>
+  <div class="why">
+    Every "Great"-rubric idea lives here: <b>recency over depth</b> (decay × multiplication), <b>automation discounting</b> (genuine-only + the 70% flag), <b>no circular MQL dependence</b> (segment = data source), and <b>fairness to sparse records</b> (within-type median + ZoomInfo fallback). Out comes <code style="font-family:var(--mono);font-size:.82rem">features.csv</code>, ready to normalize and blend.
+  </div>
+</div>
+</body>
+</html>

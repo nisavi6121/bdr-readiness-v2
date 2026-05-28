@@ -1,0 +1,29 @@
+# Generated data — intermediate files excluded; scored output committed for Vercel deployment
+data/raw/
+data/features/
+data/scored/scored.csv
+data/cleaned/people.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

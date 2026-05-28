@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>How the Clean Stage Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0d0f14;--bg2:#13161e;--bg3:#1b1f2a;
+    --border:#252a38;--border2:#2e3447;
+    --text:#e8eaf0;--text2:#9aa0b4;--text3:#5c6278;
+    --accent:#4f7cff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+    --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--display:'Fraunces',Georgia,serif;
+  }
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:36px 20px 80px}
+  .wrap{max-width:840px;margin:0 auto}
+  h1{font-family:var(--display);font-weight:300;font-size:1.85rem;letter-spacing:-.02em;text-align:center}
+  h1 b{font-weight:700;color:var(--accent)}
+  .sub{text-align:center;color:var(--text2);font-size:.9rem;margin:8px 0 8px}
+  .intro{text-align:center;color:var(--text3);font-size:.84rem;max-width:620px;margin:0 auto 24px}
+
+  /* hero dedup */
+  .hero{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:8px}
+  .hero-top{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:14px;flex-wrap:wrap}
+  .big{text-align:center}
+  .big .n{font-family:var(--mono);font-weight:700;font-size:2.2rem;line-height:1}
+  .big .l{font-size:.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+  .big.records .n{color:var(--text2)} .big.people .n{color:var(--green)}
+  .hero-arrow{color:var(--text3)} .hero-arrow svg{width:30px;height:30px}
+  .stack{display:flex;height:26px;border-radius:6px;overflow:hidden;border:1px solid var(--border2)}
+  .stack .u{background:var(--green);display:flex;align-items:center;justify-content:center;color:#0d0f14;font-weight:600;font-size:.74rem}
+  .stack .m{background:var(--bg3);display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:.74rem}
+  .hero-legend{display:flex;gap:16px;justify-content:center;margin-top:9px;font-size:.74rem;color:var(--text2);flex-wrap:wrap}
+  .hero-legend i{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:5px}
+
+  .arrow{display:flex;justify-content:center;color:var(--border2);height:24px;align-items:center}
+  .arrow svg{width:18px;height:18px}
+
+  /* step */
+  .step{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:46px 1fr;gap:14px;align-items:start}
+  .badge{width:38px;height:38px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center}
+  .badge svg{width:21px;height:21px;color:#0d0f14}
+  .st .t{font-family:var(--display);font-weight:700;font-size:1.02rem;margin-bottom:5px}
+  .st p{font-size:.85rem;color:var(--text2);margin-bottom:9px}
+  .st p:last-child{margin-bottom:0}
+
+  /* schema map */
+  .map{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+  .mrow{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.74rem;flex-wrap:wrap}
+  .mfrom{color:var(--text3)} .mto{color:var(--green)}
+  .mrow svg{width:16px;height:12px;color:var(--text3);flex-shrink:0}
+
+  /* identity merge */
+  .merge{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+  .mline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .node{font-family:var(--mono);font-size:.74rem;padding:4px 11px;border-radius:7px;border:1px solid var(--border2);background:var(--bg3)}
+  .node.l{color:var(--green)} .node.c{color:var(--accent)} .node.x{color:var(--red)}
+  .plus{color:var(--text3);font-size:.85rem}
+  .res{color:var(--text3);font-size:.72rem}
+  .mline svg{width:22px;height:12px}
+  .ok{color:var(--green)} .bad{color:var(--red)}
+
+  /* flag groups */
+  .fgroups{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:600px){.fgroups{grid-template-columns:1fr}}
+  .fg{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px}
+  .fg .fh{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:7px}
+  .fchips{display:flex;flex-wrap:wrap;gap:5px}
+  .fchip{font-family:var(--mono);font-size:.68rem;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:2px 7px}
+
+  /* three axes */
+  .axes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+  @media(max-width:600px){.axes{grid-template-columns:1fr}}
+  .ax{border-radius:10px;padding:13px 15px;border:1px solid}
+  .ax .ah{font-weight:700;font-size:.9rem;margin-bottom:4px;display:flex;align-items:center;gap:7px}
+  .ax p{font-size:.76rem;color:var(--text2)}
+  .ax .res2{font-size:.72rem;margin-top:7px;font-family:var(--mono)}
+  .ax.block{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.3)}
+  .ax.block .ah{color:var(--red)}
+  .ax.soft{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.3)}
+  .ax.soft .ah{color:var(--amber)}
+  .ax.trust{background:rgba(79,124,255,.07);border-color:rgba(79,124,255,.3)}
+  .ax.trust .ah{color:var(--accent)}
+
+  .sec-h{font-family:var(--display);font-size:1.15rem;text-align:center;margin:32px 0 4px}
+  .sec-sub{text-align:center;font-size:.78rem;color:var(--text3);margin-bottom:6px}
+  .why{background:rgba(34,197,94,.07);border:1px solid var(--border2);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:14px 18px;margin-top:16px;font-size:.86rem;color:var(--text2)}
+  .why b{color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>How the <b>Clean Stage</b> Works</h1>
+  <p class="sub"><code style="font-family:var(--mono);color:var(--text2);font-size:.85rem">01_clean.py</code> — from two messy tables to one trusted list</p>
+  <p class="intro">Clean drops nothing. It <i>unifies, resolves identity, and labels</i> — so everything downstream can trust who's who.</p>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-top">
+      <div class="big records"><div class="n">1,000</div><div class="l">records in</div></div>
+      <div class="hero-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div>
+      <div class="big people"><div class="n">838</div><div class="l">real people out</div></div>
+    </div>
+    <div class="stack"><div class="u" style="width:83.8%">838 unique identities</div><div class="m" style="width:16.2%">162 merged</div></div>
+    <div class="hero-legend">
+      <span><i style="background:var(--green)"></i>838 distinct people (scored)</span>
+      <span><i style="background:var(--bg3);border:1px solid var(--border2)"></i>162 linked leads merged into their contact</span>
+      <span style="color:var(--red)"><i style="background:var(--red)"></i>38 broken links — can't merge</span>
+    </div>
+  </div>
+
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+  <!-- JOB 1 -->
+  <div class="step">
+    <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div>
+    <div class="st">
+      <div class="t">1 · Unify the schema</div>
+      <p>Leads and contacts describe the same human with <b>different field names</b>. You can't stack them until they line up.</p>
+      <div class="map">
+        <div class="mrow"><span class="mfrom">lead_id / contact_id</span><svg viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 6h18M14 2l5 4-5 4"/></svg><span class="mto">record_id</span></div>
+        <div class="mrow"><span class="mfrom">is_mql (contact)</span><svg viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 6h18M14 2l5 4-5 4"/></svg><span class="mto">is_current_mql</span></div>
+        <div class="mrow"><span class="mfrom">primary_lead_id</span><svg viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 6h18M14 2l5 4-5 4"/></svg><span class="mto">lead_origin_id</span></div>
+      </div>
+      <p style="margin-top:9px;font-size:.78rem;color:var(--text3)">It deliberately <i>keeps</i> the two score fields separate (<code style="font-family:var(--mono);font-size:.74rem">mkto_lead_score</code> vs <code style="font-family:var(--mono);font-size:.74rem">mkto_contact_score_c</code>) — so nothing naively averages them.</p>
+    </div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+  <!-- JOB 2 -->
+  <div class="step">
+    <div class="badge" style="background:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M12 11v4M9 15h6"/></svg></div>
+    <div class="st">
+      <div class="t">2 · Resolve identity <span style="font-family:var(--mono);font-size:.7rem;color:var(--text3);font-weight:400">scoring_person_id</span></div>
+      <p>A converted lead and its contact are <b>one human</b> whose activity is split. The fix: give them a shared id so engagement merges instead of double-counting.</p>
+      <div class="merge">
+        <div class="mline"><span class="node l">Lead L00123</span><span class="plus">+</span><span class="node c">Contact C00045</span><svg class="ok" viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 6h16M12 2l5 4-5 4"/></svg><span class="res">one id → C00045 ✓</span></div>
+        <div class="mline"><span class="node l">Lead L00777</span><span class="plus">+</span><span class="node x">??? (broken)</span><svg class="bad" viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 2"><path d="M0 6h16M12 2l5 4-5 4"/></svg><span class="res">stays separate ✗ (DQ-1)</span></div>
+      </div>
+      <p style="margin-top:9px;font-size:.78rem;color:var(--text3)">162 linked leads merge in; 38 broken links can't — their damage is preserved, just flagged.</p>
+    </div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+  <!-- JOB 3 -->
+  <div class="step">
+    <div class="badge" style="background:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M9 16h6"/></svg></div>
+    <div class="st">
+      <div class="t">3 · Bring in account context</div>
+      <p>Joins each person to their company, then <b>coalesces</b>: keep the person's own industry/size if present, fall back to the account's. Account data fills gaps — it never overwrites better person-level truth.</p>
+    </div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+  <!-- JOB 4 -->
+  <div class="step">
+    <div class="badge" style="background:var(--amber)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21V4h11l-2 4 2 4H5"/></svg></div>
+    <div class="st">
+      <div class="t">4 · Flag the mess (~14 labels)</div>
+      <p>Every problem is <b>labeled, not removed</b>. Grouped by what they mean:</p>
+      <div class="fgroups">
+        <div class="fg"><div class="fh">Entity resolution</div><div class="fchips"><span class="fchip">broken_conversion_link</span><span class="fchip">orphan_contact</span></div></div>
+        <div class="fg"><div class="fh">Duplicates</div><div class="fchips"><span class="fchip">duplicate_email</span><span class="fchip">shared_email</span></div></div>
+        <div class="fg"><div class="fh">Completeness</div><div class="fchips"><span class="fchip">missing_account</span><span class="fchip">missing_title</span><span class="fchip">missing_phone</span><span class="fchip">missing_industry</span><span class="fchip">free_email_leakage</span></div></div>
+        <div class="fg"><div class="fh">Compliance / overlay</div><div class="fchips"><span class="fchip">opted_out</span><span class="fchip">email_bounced</span><span class="fchip">no_longer</span><span class="fchip">non_prospect</span><span class="fchip">do_not_contact</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THREE AXES -->
+  <h2 class="sec-h">The clever part: three independent axes</h2>
+  <p class="sec-sub">"blocked", "be careful", and "messy data" are kept completely separate</p>
+  <div class="axes">
+    <div class="ax block">
+      <div class="ah"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/></svg>Blocked</div>
+      <p>non-prospect · do-not-contact · left company</p>
+      <div class="res2" style="color:var(--red)">→ Flagged tier</div>
+    </div>
+    <div class="ax soft">
+      <div class="ah"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg>Be careful</div>
+      <p>opted-out · bounced email</p>
+      <div class="res2" style="color:var(--amber)">→ BDR instructions</div>
+    </div>
+    <div class="ax trust">
+      <div class="ah"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V10M10 19V5M16 19v-7M22 19H2"/></svg>Data trust</div>
+      <p>count of 9 data-quality flags</p>
+      <div class="res2" style="color:var(--accent)">→ confidence label</div>
+    </div>
+  </div>
+  <p class="sec-sub" style="margin-top:10px">A pristine record can be blocked. A messy record can be perfectly callable. They don't bleed into each other.</p>
+
+  <h2 class="sec-h">Why build it this way?</h2>
+  <div class="why">
+    Clean <b>flags rather than drops</b> — every blocked, duplicate, or junk record still flows through, just labeled, so a reviewer can see <i>why</i> it was excluded. And by splitting "blocked / careful / messy" into three independent axes, the model treats <b>readiness and data quality as separate concerns</b> — exactly what the rubric rewards.
+  </div>
+</div>
+</body>
+</html>

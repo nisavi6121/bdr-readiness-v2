@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>BDR Readiness — Pipeline Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0d0f14;--bg2:#13161e;--bg3:#1b1f2a;
+    --border:#252a38;--border2:#2e3447;
+    --text:#e8eaf0;--text2:#9aa0b4;--text3:#5c6278;
+    --accent:#4f7cff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+    --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--display:'Fraunces',Georgia,serif;
+  }
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;padding:36px 20px 80px}
+  .wrap{max-width:860px;margin:0 auto}
+  h1{font-family:var(--display);font-weight:300;font-size:1.8rem;letter-spacing:-.02em;text-align:center}
+  h1 b{font-weight:700;color:var(--accent)}
+  .sub{text-align:center;color:var(--text3);font-size:.82rem;margin:6px 0 26px}
+
+  /* source data rail */
+  .rail{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px}
+  .src{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:11px 8px;text-align:center}
+  .src svg{width:18px;height:18px;color:var(--purple);margin-bottom:5px}
+  .src .nm{font-family:var(--mono);font-size:.68rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .src .ct{font-family:var(--mono);font-weight:600;font-size:.95rem;color:var(--text)}
+  @media(max-width:620px){.rail{grid-template-columns:repeat(2,1fr)}}
+
+  /* arrow */
+  .arrow{display:flex;justify-content:center;color:var(--border2);height:26px;align-items:center}
+  .arrow svg{width:20px;height:20px}
+
+  /* stage band */
+  .stage{display:grid;grid-template-columns:54px 1fr auto;gap:14px;align-items:center;background:var(--bg2);border:1px solid var(--border);border-left-width:4px;border-radius:11px;padding:14px 16px}
+  .ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+  .ico svg{width:22px;height:22px;color:#0d0f14}
+  .mid .hd{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:8px}
+  .mid .t{font-family:var(--display);font-weight:700;font-size:1rem}
+  .mid .f{font-family:var(--mono);font-size:.7rem;color:var(--text3)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:.73rem;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:100px;padding:3px 10px;white-space:nowrap}
+  .chip b{color:var(--text);font-weight:600}
+  .artifact{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:96px}
+  .artifact svg{width:20px;height:20px;color:var(--text3)}
+  .artifact .a{font-family:var(--mono);font-size:.66rem;color:var(--text2);text-align:center}
+  @media(max-width:620px){.stage{grid-template-columns:42px 1fr}.artifact{display:none}}
+
+  /* detail visuals */
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  @media(max-width:620px){.panels{grid-template-columns:1fr}}
+  .panel{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:14px 16px}
+  .panel h3{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:11px}
+
+  /* weight bars */
+  .wrow{margin-bottom:10px}
+  .wrow .lab{font-size:.74rem;color:var(--text2);margin-bottom:4px}
+  .wbar{display:flex;height:22px;border-radius:5px;overflow:hidden}
+  .seg{display:flex;align-items:center;justify-content:center;font-size:.66rem;font-weight:600;color:#0d0f14}
+  .w-eng{background:var(--accent)} .w-acc{background:var(--green)} .w-prof{background:var(--purple)}
+  .wlegend{display:flex;gap:12px;margin-top:8px;font-size:.7rem;color:var(--text2)}
+  .wlegend span{display:inline-flex;align-items:center;gap:5px}
+  .wlegend i{width:9px;height:9px;border-radius:2px;display:inline-block}
+
+  /* tier pills */
+  .tiers{display:flex;flex-direction:column;gap:8px}
+  .tier{display:flex;align-items:center;gap:10px}
+  .pill{font-size:.74rem;font-weight:600;padding:3px 12px;border-radius:100px;min-width:92px;text-align:center}
+  .p-call{background:rgba(34,197,94,.16);color:var(--green)}
+  .p-follow{background:rgba(245,158,11,.16);color:var(--amber)}
+  .p-nurture{background:rgba(156,163,175,.13);color:var(--text2)}
+  .p-flag{background:rgba(239,68,68,.16);color:var(--red)}
+  .tier .th{font-family:var(--mono);font-size:.7rem;color:var(--text3)}
+
+  .ids{text-align:center;font-size:.72rem;color:var(--text3);margin-top:20px}
+  .ids code{font-family:var(--mono);color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1><b>BDR</b> Readiness — Pipeline Flow</h1>
+  <p class="sub">generate → clean → features → score → rank → app</p>
+
+  <!-- SOURCE RAIL -->
+  <div class="rail">
+    <div class="src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg><div class="ct">200</div><div class="nm">accounts</div></div>
+    <div class="src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg><div class="ct">60</div><div class="nm">campaigns</div></div>
+    <div class="src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg><div class="ct">600</div><div class="nm">leads</div></div>
+    <div class="src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2 21c0-3.5 3-5.5 7-5.5"/><path d="M16 7l2 2 4-4"/><path d="M14 21c0-3 2.5-5 5-5"/></svg><div class="ct">400</div><div class="nm">contacts</div></div>
+    <div class="src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="8" cy="7" r="1.4" fill="currentColor"/><circle cx="14" cy="12" r="1.4" fill="currentColor"/><circle cx="10" cy="17" r="1.4" fill="currentColor"/></svg><div class="ct">~5k</div><div class="nm">cmp_members</div></div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- STAGE 0 -->
+  <div class="stage" style="border-left-color:var(--purple)">
+    <div class="ico" style="background:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div>
+    <div class="mid">
+      <div class="hd"><span class="t">Generate</span><span class="f">generation/generate.py</span></div>
+      <div class="chips"><span class="chip"><b>11</b> DQ issues</span><span class="chip">persona guarantees</span><span class="chip">weighted engagement</span><span class="chip">SEED 42</span></div>
+    </div>
+    <div class="artifact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><div class="a">data/raw/</div></div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- STAGE 1 -->
+  <div class="stage" style="border-left-color:var(--accent)">
+    <div class="ico" style="background:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18l-7 8v5l-4 2v-7z"/></svg></div>
+    <div class="mid">
+      <div class="hd"><span class="t">Clean</span><span class="f">01_clean.py</span></div>
+      <div class="chips"><span class="chip"><b>resolve identity</b></span><span class="chip">lineage</span><span class="chip">DQ flags</span><span class="chip">hard vs soft</span></div>
+    </div>
+    <div class="artifact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><div class="a">people.csv</div></div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- STAGE 2 -->
+  <div class="stage" style="border-left-color:var(--green)">
+    <div class="ico" style="background:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="9" cy="8" r="2.4" fill="#13161e"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="#13161e"/></svg></div>
+    <div class="mid">
+      <div class="hd"><span class="t">Features</span><span class="f">02_features.py</span></div>
+      <div class="chips"><span class="chip">decay <b>30d</b></span><span class="chip">automation filter</span><span class="chip">account segment</span><span class="chip">median impute</span></div>
+    </div>
+    <div class="artifact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><div class="a">features.csv</div></div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- STAGE 3 -->
+  <div class="stage" style="border-left-color:var(--amber)">
+    <div class="ico" style="background:var(--amber)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="20" x2="6" y2="12"/><line x1="12" y1="20" x2="12" y2="5"/><line x1="18" y1="20" x2="18" y2="14"/></svg></div>
+    <div class="mid">
+      <div class="hd"><span class="t">Score</span><span class="f">03_score.py</span></div>
+      <div class="chips"><span class="chip">95th-pct norm</span><span class="chip"><b>weighted blend</b></span><span class="chip">confidence</span></div>
+    </div>
+    <div class="artifact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><div class="a">scored.csv</div></div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- STAGE 4 -->
+  <div class="stage" style="border-left-color:var(--red)">
+    <div class="ico" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21V4"/><path d="M5 4h12l-2 4 2 4H5"/></svg></div>
+    <div class="mid">
+      <div class="hd"><span class="t">Rank</span><span class="f">04_rank.py</span></div>
+      <div class="chips"><span class="chip"><b>tiers</b></span><span class="chip">auto cap</span><span class="chip">suppress + promote</span><span class="chip">BDR action</span></div>
+    </div>
+    <div class="artifact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><div class="a">ranked.csv</div></div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- APP -->
+  <div class="stage" style="border-left-color:var(--accent)">
+    <div class="ico" style="background:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="1.5"/><line x1="9" y1="21" x2="15" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+    <div class="mid">
+      <div class="hd"><span class="t">App</span><span class="f">app.py · Flask + Jinja</span></div>
+      <div class="chips"><span class="chip">queue</span><span class="chip">record + <b>sunburst</b></span><span class="chip">methodology</span><span class="chip">KB</span></div>
+    </div>
+    <div class="artifact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg><div class="a">demo URL</div></div>
+  </div>
+
+  <!-- DETAIL VISUALS -->
+  <div class="panels">
+    <div class="panel">
+      <h3>Score weights (by entity type)</h3>
+      <div class="wrow">
+        <div class="lab">Lead</div>
+        <div class="wbar"><div class="seg w-eng" style="width:75%">75</div><div class="seg w-acc" style="width:15%">15</div><div class="seg w-prof" style="width:10%">10</div></div>
+      </div>
+      <div class="wrow">
+        <div class="lab">Contact</div>
+        <div class="wbar"><div class="seg w-eng" style="width:60%">60</div><div class="seg w-acc" style="width:25%">25</div><div class="seg w-prof" style="width:15%">15</div></div>
+      </div>
+      <div class="wlegend"><span><i class="w-eng"></i>Engagement</span><span><i class="w-acc"></i>Account fit</span><span><i class="w-prof"></i>Profile fit</span></div>
+    </div>
+
+    <div class="panel">
+      <h3>Tiers</h3>
+      <div class="tiers">
+        <div class="tier"><span class="pill p-call">Call Now</span><span class="th">lead ≥65 · contact ≥70</span></div>
+        <div class="tier"><span class="pill p-follow">Follow Up</span><span class="th">≥35 · ≥40</span></div>
+        <div class="tier"><span class="pill p-nurture">Nurture</span><span class="th">below threshold</span></div>
+        <div class="tier"><span class="pill p-flag">Flagged</span><span class="th">hard blocker</span></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="ids">linked by <code>record_id</code> · resolved by <code>scoring_person_id</code> (converted lead ↔ contact)</p>
+</div>
+</body>
+</html>

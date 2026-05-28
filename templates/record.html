@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% set nav_page = "queue" %}
+{% block content %}
+<a class="back" href="{{ back_url }}">← Back to Queue</a>
+
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+  <div>
+    <h1 class="page-title" style="margin:0">{{ r.first_name }} {{ r.last_name }}</h1>
+    <div style="color:var(--text2);font-size:.84rem;margin-top:2px">
+      {{ r.title or 'No title' }} · {{ r.entity_type }} · {{ r.lineage_type }}
+    </div>
+  </div>
+  {% if r.tier=='Call Now' %}<span class="badge b-call">Call Now</span>
+  {% elif r.tier=='Follow Up' %}<span class="badge b-follow">Follow Up</span>
+  {% elif r.tier=='Flagged' %}<span class="badge b-flagged">Flagged</span>
+  {% else %}<span class="badge b-nurture">Nurture</span>{% endif %}
+</div>
+
+<div class="metrics" style="margin-bottom:18px">
+  <div class="metric"><div class="metric-lbl">Final Score</div><div class="metric-val blue">{{ "%.1f"|format(r.final_score) }}</div></div>
+  <div class="metric">
+    <div class="metric-lbl">Engagement <span style="color:var(--text3);font-size:.7rem">×{{ "%.2f"|format(r.engagement_weight or 0.60) }}</span></div>
+    <div class="metric-val">{{ "%.1f"|format(r.engagement_score) }}</div>
+  </div>
+  <div class="metric">
+    <div class="metric-lbl">Account Fit <span style="color:var(--text3);font-size:.7rem">×{{ "%.2f"|format(r.account_fit_weight or 0.22) }}</span></div>
+    <div class="metric-val">{{ "%.1f"|format(r.account_fit_score) }}</div>
+  </div>
+  <div class="metric">
+    <div class="metric-lbl">Profile Fit <span style="color:var(--text3);font-size:.7rem">×{{ "%.2f"|format(r.profile_fit_weight or 0.18) }}</span></div>
+    <div class="metric-val">{{ "%.1f"|format(r.profile_fit_score) }}</div>
+  </div>
+  <div class="metric">
+    <div class="metric-lbl">Confidence</div>
+    <div class="metric-val {% if r.confidence=='High' %}c-high{% elif r.confidence=='Medium' %}c-med{% else %}c-low{% endif %}">{{ r.confidence }}</div>
+  </div>
+  <div class="metric">
+    <div class="metric-lbl">DQ Flags</div>
+    <div class="metric-val {% if r.dq_flag_count > 0 %}amber{% endif %}">{{ r.dq_flag_count }}</div>
+  </div>
+</div>
+
+<div class="detail-grid">
+  <!-- Left: profile + breakdown -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <div class="card-title">Profile</div>
+      <div class="kv">
+        {% if r.email %}<div class="kv-row"><span class="kv-key">Email</span><span class="kv-val">{{ r.email }}</span></div>{% endif %}
+        {% if r.phone %}<div class="kv-row"><span class="kv-key">Phone</span><span class="kv-val">{{ r.phone }}</span></div>{% endif %}
+        {% if r.account_name %}<div class="kv-row"><span class="kv-key">Account</span><span class="kv-val">{{ r.account_name }}</span></div>{% endif %}
+        {% if r.industry %}<div class="kv-row"><span class="kv-key">Industry</span><span class="kv-val">{{ r.industry }}</span></div>{% endif %}
+        {% if r.country %}<div class="kv-row"><span class="kv-key">Country</span><span class="kv-val">{{ r.country }}</span></div>{% endif %}
+        {% if r.annual_revenue %}<div class="kv-row"><span class="kv-key">Annual Revenue</span><span class="kv-val">${{ "%.1f"|format(r.annual_revenue) }}M</span></div>{% endif %}
+        {% if r.job_level %}<div class="kv-row"><span class="kv-key">Job Level</span><span class="kv-val">{{ r.job_level }}</span></div>{% endif %}
+        {% if r.job_persona %}<div class="kv-row"><span class="kv-key">Job Persona</span><span class="kv-val">{{ r.job_persona }}</span></div>{% endif %}
+        {% if r.lead_source %}<div class="kv-row"><span class="kv-key">Lead Source</span><span class="kv-val">{{ r.lead_source }}</span></div>{% endif %}
+        <div class="kv-row"><span class="kv-key">Segment</span><span class="kv-val" style="color:var(--purple)">{{ r.segment }}</span></div>
+        <div class="kv-row"><span class="kv-key">Seg. Multiplier</span><span class="kv-val">{{ "%.2f"|format(r.segment_multiplier or 0) }}</span></div>
+      </div>
+      {% if r.hard_blocker %}
+      <div class="blocker"><strong>Hard Blocker:</strong> {{ r.hard_blocker_reasons }}</div>
+      {% endif %}
+      {% if r.score_explanation %}
+      <div class="explain">{{ r.score_explanation }}</div>
+      {% endif %}
+      {% if r.dq_flags %}
+      <div class="dq-warn">DQ issues: {{ r.dq_flags }}</div>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <div class="card-title">Score Breakdown</div>
+      <div class="bdown">
+        <div class="bd-row">
+          <span class="bd-lbl">Engagement (×{{ "%.2f"|format(r.engagement_weight or 0.60) }})</span>
+          <div class="bd-bg"><div class="bd-fill" style="width:{{ r.engagement_score }}%;background:var(--accent)"></div></div>
+          <span class="bd-num mono">{{ "%.1f"|format(r.engagement_score) }}</span>
+        </div>
+        <div class="bd-row">
+          <span class="bd-lbl">Account Fit (×{{ "%.2f"|format(r.account_fit_weight or 0.22) }})</span>
+          <div class="bd-bg"><div class="bd-fill" style="width:{{ r.account_fit_score }}%;background:var(--green)"></div></div>
+          <span class="bd-num mono">{{ "%.1f"|format(r.account_fit_score) }}</span>
+        </div>
+        <div class="bd-row">
+          <span class="bd-lbl">Profile Fit (×{{ "%.2f"|format(r.profile_fit_weight or 0.18) }})</span>
+          <div class="bd-bg"><div class="bd-fill" style="width:{{ r.profile_fit_score }}%;background:var(--purple)"></div></div>
+          <span class="bd-num mono">{{ "%.1f"|format(r.profile_fit_score) }}</span>
+        </div>
+      </div>
+      {% if r.bdr_action %}
+      <div style="margin-top:14px;padding:10px 14px;background:var(--bg3);border-radius:var(--r);font-size:.84rem;color:var(--text2)">
+        <strong style="color:var(--text)">BDR Action:</strong> {{ r.bdr_action }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Right: chart + engagement history -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <div class="card-title">Score Composition</div>
+      {{ sunburst_html|safe }}
+    </div>
+
+    <div class="card">
+      <div class="card-title">Engagement History</div>
+      {% if engagement %}
+      <div class="tbl-wrap" style="border:none">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Type</th><th>Status</th><th>Active</th><th>Campaign</th></tr>
+          </thead>
+          <tbody>
+            {% for e in engagement %}
+            <tr style="cursor:default">
+              <td class="mono" style="color:var(--text2)">{{ e.response_date }}</td>
+              <td>{{ e.campaign_type }}</td>
+              <td>
+                {{ e.member_status }}
+                {% if e.is_automated %}<span class="auto-tag">auto</span>{% endif %}
+              </td>
+              <td class="mono" style="color:{% if e.is_active %}var(--green){% else %}var(--amber){% endif %}">
+                {% if e.is_active %}✓{% else %}✗{% endif %}
+              </td>
+              <td class="mono" style="color:var(--text3);font-size:.76rem">{{ e.campaign_id }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div style="color:var(--text3);padding:24px;text-align:center;font-size:.875rem">No campaign history found.</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

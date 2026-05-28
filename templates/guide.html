@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% set nav_page = "guide" %}
+{% block content %}
+<h1 class="page-title">User Guide</h1>
+<p class="page-sub">How to navigate and use the BDR Readiness Score tool</p>
+
+<div class="method">
+
+  <h2>What This Tool Does</h2>
+  <p>The BDR Readiness Score replaces the binary MQL flag with a transparent 0–100 readiness
+  score for every lead and contact in the CRM. Instead of working a flat list by arrival time,
+  BDRs see a ranked queue with clear action guidance and an explanation for every score.</p>
+
+  <h2>The Queue</h2>
+  <p>The main view at <strong>/</strong> shows all records ranked by readiness score. The top
+  metrics bar gives a snapshot of the current filtered population.</p>
+
+  <h3>Tier badges</h3>
+  <ul>
+    <li><strong style="color:var(--green)">Call Now</strong> — high readiness (Lead ≥65, Contact ≥70).
+    Priority outreach within 24 hours.</li>
+    <li><strong style="color:var(--amber)">Follow Up</strong> — moderate readiness (Lead ≥35, Contact ≥40).
+    Schedule within 5 business days.</li>
+    <li><strong style="color:var(--text2)">Nurture</strong> — low readiness. Add to long-term sequence,
+    no immediate outreach warranted.</li>
+    <li><strong style="color:var(--red)">Flagged</strong> — hard blocker present. Review before any
+    outreach. Do not call.</li>
+  </ul>
+
+  <h3>Action badges</h3>
+  <ul>
+    <li><strong style="color:var(--green)">Call / Email</strong> — priority outreach, all channels open</li>
+    <li><strong style="color:var(--green)">Call only</strong> — opted out of email; use phone or event only</li>
+    <li><strong style="color:var(--amber)">Follow Up</strong> — schedule a follow-up call or email</li>
+    <li><strong style="color:var(--amber)">Phone / LinkedIn</strong> — email bounced; use alternative channels</li>
+    <li><strong style="color:var(--red)">Blocked</strong> — hard blocker, review before touching</li>
+    <li><strong style="color:var(--text2)">Nurture</strong> — add to long-term sequence</li>
+    <li><strong style="color:var(--text2)">Converted</strong> — lead was converted to a contact; work the contact record instead</li>
+  </ul>
+
+  <h3>Columns</h3>
+  <ul>
+    <li><strong>Score</strong> — 0–100 readiness score with a visual bar. Higher is more ready.</li>
+    <li><strong>Confidence</strong> — High / Medium / Low based on number of DQ flags on the record.
+    High = 0–1 flags, Medium = 2–3, Low = 4+.</li>
+    <li><strong>Seg.</strong> — account data segment (L1/L2/L3 for leads, C1/C2/C3 for contacts).
+    Reflects data source confidence, not prospect quality.</li>
+    <li><strong>30d eng.</strong> — number of genuine (non-automated) engagement events in the last 30 days.</li>
+    <li><strong>Last eng.</strong> — days since most recent engagement. "—" means no engagement history.</li>
+    <li><strong>DQ</strong> — count of data quality flags. Amber if any flags present.</li>
+  </ul>
+
+  <h3>Sorting</h3>
+  <p>Click any column header to sort. Click again to reverse direction. Default sort is by tier
+  then score descending — this surfaces the highest-readiness records first within each tier.</p>
+
+  <h3>Filters</h3>
+  <ul>
+    <li><strong>Tier</strong> — filter to a single prioritisation tier</li>
+    <li><strong>Entity type</strong> — show only Leads or only Contacts</li>
+    <li><strong>Industry</strong> — filter by company industry</li>
+    <li><strong>Min score</strong> — show only records above a score threshold</li>
+    <li><strong>Action</strong> — filter by action tag (e.g. show only "Call / Email")</li>
+    <li><strong>Named accounts only</strong> — restrict to manually curated strategic target accounts</li>
+  </ul>
+  <p>Hit <strong>Apply</strong> to apply filters, <strong>Reset</strong> to clear all back to defaults.
+  Filters stack — you can combine tier + industry + min score simultaneously.</p>
+
+  <h3>Converted records</h3>
+  <p>Rows shown at reduced opacity with a <span class="auto-tag">converted</span> tag are leads
+  that have been converted to a contact. The contact is the canonical record — do not action the
+  lead. The linked contact record will appear in the queue at the appropriate tier.</p>
+
+  <h2>Record Detail</h2>
+  <p>Click any row to open the full record view. This shows:</p>
+
+  <h3>Profile card</h3>
+  <p>Contact details, job level, persona, company, industry, employee count, lead source, and
+  country. Fields shown in amber are missing (data quality gap).</p>
+
+  <h3>Score breakdown</h3>
+  <p>The three components that make up the final score, each on a 0–100 scale with their
+  respective weights:</p>
+  <ul>
+    <li><strong>Engagement</strong> — weighted recent campaign activity (leads 75%, contacts 60%)</li>
+    <li><strong>Account Fit</strong> — ICP industry, named account, employee size, intent score
+    adjusted by segment multiplier (leads 15%, contacts 25%)</li>
+    <li><strong>Profile Fit</strong> — job level and job persona scores averaged (leads 10%, contacts 15%)</li>
+  </ul>
+  <p>A sunburst chart shows how each component contributes to the final score. Hover segments for
+  exact values.</p>
+
+  <h3>BDR action</h3>
+  <p>The recommended outreach action with any relevant soft flag notes (opted out, bounced email,
+  automation-inflated engagement). This is the primary field BDRs should act on.</p>
+
+  <h3>Data quality flags</h3>
+  <p>Any DQ issues on the record are listed here. Flags affect the <strong>Confidence</strong>
+  rating but do not directly reduce the score — a high-readiness record with a missing phone
+  is still high readiness, just harder to reach.</p>
+
+  <h3>Engagement history</h3>
+  <p>Full campaign membership history sorted by response date descending. Each row shows the
+  campaign name, type, status, and date. Automated rows (status = Sent) are shown at reduced
+  opacity — they do not contribute to the engagement score.</p>
+
+  <h2>Understanding the Score</h2>
+
+  <h3>Why is this record scored high?</h3>
+  <p>Look at the score breakdown bars. A high engagement score (dark blue) with recent 30d
+  activity is the strongest driver. Check the score explanation line on the record page for a
+  plain-English summary.</p>
+
+  <h3>Why is a strong-looking profile scored low?</h3>
+  <p>Profile fit (job level + persona) contributes only 10–15% of the final score. A CISO at a
+  Fortune 500 with zero engagement will score low — the model rewards current buying signals,
+  not static profile quality. Check the "Last eng." column: if it's blank or 365+, that's why.</p>
+
+  <h3>Why does a record show Flagged despite a high score?</h3>
+  <p>Hard blockers (Non-Prospect persona, account do-not-contact, no longer with company) override
+  the score entirely and assign the Flagged tier. The score is still computed and shown for
+  reference but should not drive outreach.</p>
+
+  <h3>What does confidence mean?</h3>
+  <p>Confidence reflects data completeness, not score accuracy. A Low-confidence record has 4+
+  data quality flags (missing fields, duplicate email, broken links). The score is less reliable
+  because it was computed on incomplete data.</p>
+
+  <h2>Navigation</h2>
+  <ul>
+    <li><strong>Queue</strong> — ranked list of all records with filters and sorting</li>
+    <li><strong>Methodology</strong> — full explanation of the scoring model, formulas, and design decisions</li>
+    <li><strong>Knowledge Base</strong> — analyst discovery notes, design decisions, issue catalogue, and lessons learned</li>
+    <li><strong>Guide</strong> — this page</li>
+  </ul>
+
+</div>
+{% endblock %}

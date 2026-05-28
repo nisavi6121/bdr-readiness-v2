@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% set nav_page = "queue" %}
+{% block content %}
+<h1 class="page-title">BDR Readiness Queue</h1>
+<p class="page-sub">{{ total }} records matching current filters</p>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-lbl">Total Scored</div><div class="metric-val blue">{{ stats.total }}</div></div>
+  <div class="metric"><div class="metric-lbl">Call Now</div><div class="metric-val green">{{ stats.call_now }}</div></div>
+  <div class="metric"><div class="metric-lbl">Follow Up</div><div class="metric-val amber">{{ stats.follow_up }}</div></div>
+  <div class="metric"><div class="metric-lbl">Flagged</div><div class="metric-val red">{{ stats.flagged }}</div></div>
+  <div class="metric"><div class="metric-lbl">Median Score</div><div class="metric-val">{{ stats.median }}</div></div>
+  <div class="metric"><div class="metric-lbl">DQ Flags</div><div class="metric-val">{{ stats.dq_total }}</div></div>
+</div>
+
+<form method="get" action="/">
+  <div class="filters">
+    <div class="fg">
+      <label>Tier</label>
+      <select name="tier">
+        <option value="" {% if not f_tier %}selected{% endif %}>All tiers</option>
+        <option value="Call Now" {% if f_tier=='Call Now' %}selected{% endif %}>Call Now</option>
+        <option value="Follow Up" {% if f_tier=='Follow Up' %}selected{% endif %}>Follow Up</option>
+        <option value="Nurture" {% if f_tier=='Nurture' %}selected{% endif %}>Nurture</option>
+        <option value="Flagged" {% if f_tier=='Flagged' %}selected{% endif %}>Flagged</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Entity type</label>
+      <select name="entity_type">
+        <option value="" {% if not f_entity %}selected{% endif %}>All</option>
+        <option value="Lead" {% if f_entity=='Lead' %}selected{% endif %}>Lead</option>
+        <option value="Contact" {% if f_entity=='Contact' %}selected{% endif %}>Contact</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Industry</label>
+      <select name="industry">
+        <option value="">All industries</option>
+        {% for ind in industries %}
+        <option value="{{ ind }}" {% if f_industry==ind %}selected{% endif %}>{{ ind }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="fg">
+      <label>Min score</label>
+      <input type="number" name="min_score" value="{{ f_min_score }}" min="0" max="100" style="width:80px"/>
+    </div>
+    <div class="fg">
+      <label>Action</label>
+      <select name="action">
+        <option value="" {% if not f_action %}selected{% endif %}>All actions</option>
+        {% for tag in action_tags %}
+        <option value="{{ tag }}" {% if f_action==tag %}selected{% endif %}>{{ tag }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <label class="chk">
+      <input type="checkbox" name="named_only" value="1" {% if f_named_only %}checked{% endif %}/>
+      Named accounts only
+    </label>
+    <button class="btn btn-primary" type="submit">Apply</button>
+    <a class="btn btn-ghost" href="/">Reset</a>
+  </div>
+</form>
+
+<div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr>
+        {% macro sh(key, label) %}
+          <th><a href="{{ surl(key) }}" class="sort-hd{% if sort_by==key %} sort-active{% endif %}">
+            {{ label }}{% if sort_by==key %}{% if sort_dir=='asc' %} ↑{% else %} ↓{% endif %}{% endif %}
+          </a></th>
+        {% endmacro %}
+        {{ sh('record_id','ID') }}
+        {{ sh('name','Name') }}
+        {{ sh('entity_type','Type') }}
+        {{ sh('tier','Tier') }}
+        {{ sh('final_score','Score') }}
+        {{ sh('confidence','Confidence') }}
+        {{ sh('account_name','Account') }}
+        {{ sh('industry','Industry') }}
+        {{ sh('segment','Seg.') }}
+        {{ sh('meaningful_30d','30d eng.') }}
+        {{ sh('days_since','Last eng.') }}
+        {{ sh('dq_flag_count','DQ') }}
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in records %}
+      <tr onclick="location.href='/record/{{ r.record_id }}'" {% if r.is_suppressed %}style="opacity:.45"{% endif %}>
+        <td class="mono" style="color:var(--text3);font-size:.76rem">{{ r.record_id }}</td>
+        <td>{{ r.first_name }} {{ r.last_name }}{% if r.is_suppressed %} <span class="auto-tag">converted</span>{% endif %}</td>
+        <td style="color:var(--text2);font-size:.8rem">{{ r.entity_type }}</td>
+        <td>
+          {% if r.tier=='Call Now' %}<span class="badge b-call">Call Now</span>
+          {% elif r.tier=='Follow Up' %}<span class="badge b-follow">Follow Up</span>
+          {% elif r.tier=='Flagged' %}<span class="badge b-flagged">Flagged</span>
+          {% else %}<span class="badge b-nurture">Nurture</span>{% endif %}
+        </td>
+        <td style="min-width:130px">
+          <div class="sbar">
+            <div class="sbar-bg"><div class="sbar-fill" style="width:{{ r.final_score }}%"></div></div>
+            <span class="sbar-num mono">{{ "%.1f"|format(r.final_score) }}</span>
+          </div>
+        </td>
+        <td class="{% if r.confidence=='High' %}c-high{% elif r.confidence=='Medium' %}c-med{% else %}c-low{% endif %}">{{ r.confidence }}</td>
+        <td style="color:var(--text2);font-size:.8rem">{{ r.account_name or '—' }}</td>
+        <td style="color:var(--text2);font-size:.8rem">{{ r.industry or '—' }}</td>
+        <td class="mono" style="color:var(--purple);font-size:.76rem">{{ r.segment or '—' }}</td>
+        <td class="mono">{{ r.meaningful_30d }}</td>
+        <td class="mono" style="color:var(--text3)">{% if r.days_since is not none %}{{ r.days_since }}d{% else %}—{% endif %}</td>
+        <td class="mono" style="color:{% if r.dq_flag_count > 0 %}var(--amber){% else %}var(--text3){% endif %}">{{ r.dq_flag_count }}</td>
+        <td>
+          {% if r.action_tag == 'Call / Email' %}<span class="badge b-call">{{ r.action_tag }}</span>
+          {% elif r.action_tag == 'Call only' %}<span class="badge b-call">{{ r.action_tag }}</span>
+          {% elif r.action_tag == 'Follow Up' %}<span class="badge b-follow">{{ r.action_tag }}</span>
+          {% elif r.action_tag == 'Phone / LinkedIn' %}<span class="badge b-follow">{{ r.action_tag }}</span>
+          {% elif r.action_tag == 'Blocked' %}<span class="badge b-flagged">{{ r.action_tag }}</span>
+          {% elif r.action_tag == 'Converted' %}<span class="badge b-nurture">{{ r.action_tag }}</span>
+          {% elif r.action_tag == 'Nurture' %}<span class="badge b-nurture">{{ r.action_tag }}</span>
+          {% else %}<span style="color:var(--text3);font-size:.76rem">{{ r.action_tag }}</span>{% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)">No records match the current filters.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="pager">
+  <span>Page {{ page }} of {{ total_pages }} · {{ total }} results</span>
+  {% if page > 1 %}
+  <a href="{{ prev_url }}">‹ Prev</a>
+  {% else %}
+  <a class="disabled">‹ Prev</a>
+  {% endif %}
+  {% if page < total_pages %}
+  <a href="{{ next_url }}">Next ›</a>
+  {% else %}
+  <a class="disabled">Next ›</a>
+  {% endif %}
+</div>
+{% endblock %}

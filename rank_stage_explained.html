@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>How the Rank Stage Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0d0f14;--bg2:#13161e;--bg3:#1b1f2a;
+    --border:#252a38;--border2:#2e3447;
+    --text:#e8eaf0;--text2:#9aa0b4;--text3:#5c6278;
+    --accent:#4f7cff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+    --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--display:'Fraunces',Georgia,serif;
+  }
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:36px 20px 80px}
+  .wrap{max-width:840px;margin:0 auto}
+  h1{font-family:var(--display);font-weight:300;font-size:1.85rem;letter-spacing:-.02em;text-align:center}
+  h1 b{font-weight:700;color:var(--accent)}
+  .sub{text-align:center;color:var(--text2);font-size:.9rem;margin:8px 0 8px}
+  .intro{text-align:center;color:var(--text3);font-size:.84rem;max-width:600px;margin:0 auto 24px}
+
+  .sec-h{font-family:var(--display);font-size:1.12rem;margin:24px 0 10px;display:flex;align-items:center;gap:9px}
+  .sec-h .n{font-family:var(--mono);font-size:.74rem;color:#0d0f14;background:var(--accent);border-radius:6px;padding:2px 9px}
+
+  /* thresholds */
+  table{width:100%;border-collapse:collapse;font-size:.78rem}
+  th{text-align:left;color:var(--text3);font-weight:600;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;padding:5px 8px;border-bottom:1px solid var(--border2)}
+  td{padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text2)}
+  td.m{font-family:var(--mono);color:var(--text)}
+  tr:last-child td{border-bottom:none}
+
+  /* tier bars */
+  .tiers{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+  .trow{display:flex;align-items:center;gap:10px}
+  .tlabel{min-width:92px;font-size:.8rem;font-weight:600}
+  .tbar{height:24px;border-radius:5px;display:flex;align-items:center;padding-left:9px;color:#0d0f14;font-weight:600;font-size:.74rem;min-width:30px}
+  .t-call{background:var(--green)} .t-follow{background:var(--amber)} .t-nurture{background:var(--text3)} .t-flag{background:var(--red)}
+  .l-call{color:var(--green)} .l-follow{color:var(--amber)} .l-nurture{color:var(--text2)} .l-flag{color:var(--red)}
+
+  /* override chain */
+  .chain{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin-top:6px}
+  .ch-node{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:10px 13px;flex:1;min-width:130px;text-align:center}
+  .ch-node .cn{font-size:.82rem;font-weight:600;margin-bottom:2px}
+  .ch-node .cd{font-size:.7rem;color:var(--text3)}
+  .ch-arrow{display:flex;align-items:center;color:var(--border2);padding:0 4px}
+  .ch-arrow svg{width:16px;height:16px}
+  .ch-node.cap{border-color:rgba(245,158,11,.35)} .ch-node.cap .cn{color:var(--amber)}
+  .ch-node.sup{border-color:rgba(167,139,250,.35)} .ch-node.sup .cn{color:var(--purple)}
+  .ch-node.pro{border-color:rgba(34,197,94,.35)} .ch-node.pro .cn{color:var(--green)}
+
+  /* override detail cards */
+  .ods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+  @media(max-width:600px){.ods{grid-template-columns:1fr}}
+  .od{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+  .od .oh{font-weight:700;font-size:.88rem;margin-bottom:4px;display:flex;align-items:center;gap:7px}
+  .od p{font-size:.78rem;color:var(--text2)}
+  .od .big{font-family:var(--mono);font-size:1.4rem;font-weight:700;float:right;line-height:1}
+  .od.cap .oh{color:var(--amber)} .od.soft .oh{color:var(--amber)} .od.sup .oh{color:var(--purple)} .od.pro .oh{color:var(--green)}
+
+  /* tier vs action */
+  .tva{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-top:6px}
+  .tva-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+  @media(max-width:600px){.tva-grid{grid-template-columns:1fr}}
+  .tva-c{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:11px 13px}
+  .tva-c .h{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:4px}
+  .tva-c .v{font-size:.82rem;color:var(--text2)}
+  .ex{font-family:var(--mono);font-size:.74rem;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:9px 12px;margin-top:10px}
+  .ex .badge{display:inline-block;font-size:.68rem;font-weight:600;padding:1px 8px;border-radius:100px}
+  .b-call{background:rgba(34,197,94,.16);color:var(--green)} .b-conv{background:rgba(156,163,175,.13);color:var(--text2)}
+
+  /* action tag bars */
+  .acts{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+  .arow{display:flex;align-items:center;gap:9px;font-size:.76rem}
+  .arow .an{min-width:118px;color:var(--text2)}
+  .abar{height:14px;border-radius:3px;background:var(--accent);opacity:.7}
+  .arow .av{font-family:var(--mono);font-size:.7rem;color:var(--text)}
+
+  .why{background:rgba(239,68,68,.06);border:1px solid var(--border2);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:14px 18px;margin-top:18px;font-size:.86rem;color:var(--text2)}
+  .why b{color:var(--accent)}
+  .done{text-align:center;font-size:.8rem;color:var(--text3);margin-top:16px;font-family:var(--mono)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>How the <b>Rank Stage</b> Works</h1>
+  <p class="sub"><code style="font-family:var(--mono);color:var(--text2);font-size:.85rem">04_rank.py</code> — score → tiers → marching orders</p>
+  <p class="intro">Turn the 0-100 score into action buckets, apply safety overrides, and write what the BDR should actually do.</p>
+
+  <!-- STEP 1 -->
+  <div class="sec-h"><span class="n">1</span> Assign tiers — differentiated, blocker wins</div>
+  <table>
+    <tr><th>Tier</th><th>Lead ≥</th><th>Contact ≥</th></tr>
+    <tr><td class="l-call">Call Now</td><td class="m">65</td><td class="m">70</td></tr>
+    <tr><td class="l-follow">Follow Up</td><td class="m">35</td><td class="m">40</td></tr>
+    <tr><td class="l-nurture">Nurture</td><td class="m" colspan="2">below threshold</td></tr>
+    <tr><td class="l-flag">Flagged</td><td class="m" colspan="2">hard blocker — beats any score</td></tr>
+  </table>
+  <p style="font-size:.78rem;color:var(--text3);margin-top:8px">Leads get a lower bar — they score structurally lower. Real distribution across 1,000 records:</p>
+  <div class="tiers">
+    <div class="trow"><span class="tlabel l-call">Call Now</span><div class="tbar t-call" style="width:3.7%"></div><span class="av" style="font-family:var(--mono);font-size:.74rem">37</span></div>
+    <div class="trow"><span class="tlabel l-follow">Follow Up</span><div class="tbar t-follow" style="width:10.9%"></div><span style="font-family:var(--mono);font-size:.74rem">109</span></div>
+    <div class="trow"><span class="tlabel l-nurture">Nurture</span><div class="tbar t-nurture" style="width:48.5%">485</div></div>
+    <div class="trow"><span class="tlabel l-flag">Flagged</span><div class="tbar t-flag" style="width:36.9%">369</div></div>
+  </div>
+  <p style="font-size:.78rem;color:var(--text3);margin-top:8px">Only <b style="color:var(--green)">37 Call Now</b> — a tight, high-quality list, not "everyone's hot."</p>
+
+  <!-- STEP 2: override chain -->
+  <div class="sec-h"><span class="n">2</span> Then the override chain</div>
+  <div class="chain">
+    <div class="ch-node"><div class="cn">Score → Tier</div><div class="cd">base bucket</div></div>
+    <div class="ch-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div>
+    <div class="ch-node cap"><div class="cn">Auto cap</div><div class="cd">−10 from Call Now</div></div>
+    <div class="ch-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div>
+    <div class="ch-node sup"><div class="cn">Suppress</div><div class="cd">162 hidden</div></div>
+    <div class="ch-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div>
+    <div class="ch-node pro"><div class="cn">Promote</div><div class="cd">+9 contacts</div></div>
+  </div>
+  <div class="ods" style="margin-top:10px">
+    <div class="od cap"><div class="oh">Automation cap <span class="big">10</span></div><p>Inflated records can't be Call Now — demoted to Follow Up (engagement unreliable). Held persona 8.</p></div>
+    <div class="od soft"><div class="oh">Soft flags</div><p><b style="color:var(--text)">230</b> opted-out, <b style="color:var(--text)">105</b> bounced → become <i>actions</i> ("call/event only", "phone/LinkedIn"), never tier changes.</p></div>
+    <div class="od sup"><div class="oh">Suppression <span class="big">162</span></div><p>Converted leads with a working contact link → "work the contact instead." Kept in data, hidden from the queue.</p></div>
+    <div class="od pro"><div class="oh">Promotion <span class="big">9</span></div><p>When a suppressed lead outscored its contact, the contact inherits the higher tier — signal isn't lost.</p></div>
+  </div>
+
+  <!-- tier vs action -->
+  <div class="sec-h"><span class="n">3</span> Tier ≠ Action — two different questions</div>
+  <div class="tva">
+    <div class="tva-grid">
+      <div class="tva-c"><div class="h">tier</div><div class="v">the <b>score bucket</b> — how ready, by the numbers</div></div>
+      <div class="tva-c"><div class="h">action_tag</div><div class="v">what to <b>actually do</b> — accounts for suppression &amp; channel</div></div>
+    </div>
+    <div class="ex">A suppressed lead can be <span class="badge b-call">Call Now</span> tier &nbsp;but&nbsp; <span class="badge b-conv">Converted</span> action → "work the promoted contact."</div>
+    <p style="font-size:.76rem;color:var(--text3);margin-top:8px">That's why Flagged (369) ≠ Blocked tag (309): some flagged records are also converted, so they're tagged "Converted." Score and action are separate.</p>
+  </div>
+
+  <!-- action tags -->
+  <div class="sec-h"><span class="n">4</span> Final action tags (queue badges)</div>
+  <div class="acts">
+    <div class="arow"><span class="an">Nurture</span><div class="abar" style="width:100%"></div><span class="av">393</span></div>
+    <div class="arow"><span class="an">Blocked</span><div class="abar" style="width:78%;background:var(--red)"></div><span class="av">309</span></div>
+    <div class="arow"><span class="an">Converted</span><div class="abar" style="width:41%;background:var(--text3)"></div><span class="av">162</span></div>
+    <div class="arow"><span class="an">Follow Up</span><div class="abar" style="width:21%;background:var(--amber)"></div><span class="av">81</span></div>
+    <div class="arow"><span class="an">Phone / LinkedIn</span><div class="abar" style="width:9%;background:var(--amber)"></div><span class="av">34</span></div>
+    <div class="arow"><span class="an">Call / Email</span><div class="abar" style="width:5%;background:var(--green)"></div><span class="av">18</span></div>
+    <div class="arow"><span class="an">Call only</span><div class="abar" style="width:2%;background:var(--green)"></div><span class="av">3</span></div>
+  </div>
+
+  <div class="why">
+    Every design constraint lands here: <b>differentiated thresholds</b> (entity fairness), <b>automation cap + soft flags as overlays</b> (never score penalties), <b>blocker override</b> (structural non-prospects removed), and <b>suppression + promotion</b> (entity resolution carried all the way to what the BDR sees). Out comes <code style="font-family:var(--mono);font-size:.82rem">ranked_records.csv</code> — the list the app serves.
+  </div>
+  <div class="done">generate → clean → features → score → rank ✓ complete</div>
+</div>
+</body>
+</html>

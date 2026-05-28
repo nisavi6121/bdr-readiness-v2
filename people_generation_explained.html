@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>How the People Data Is Generated</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0d0f14;--bg2:#13161e;--bg3:#1b1f2a;
+    --border:#252a38;--border2:#2e3447;
+    --text:#e8eaf0;--text2:#9aa0b4;--text3:#5c6278;
+    --accent:#4f7cff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+    --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--display:'Fraunces',Georgia,serif;
+  }
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:36px 20px 80px}
+  .wrap{max-width:840px;margin:0 auto}
+  h1{font-family:var(--display);font-weight:300;font-size:1.85rem;letter-spacing:-.02em;text-align:center}
+  h1 b{font-weight:700;color:var(--accent)}
+  .sub{text-align:center;color:var(--text2);font-size:.9rem;margin:8px 0 8px}
+  .intro{text-align:center;color:var(--text3);font-size:.84rem;max-width:600px;margin:0 auto 28px}
+
+  /* lead vs contact key */
+  .key{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+  @media(max-width:600px){.key{grid-template-columns:1fr}}
+  .kc{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px}
+  .kc .h{font-weight:600;font-size:.9rem;margin-bottom:3px}
+  .kc.lead .h{color:var(--green)} .kc.contact .h{color:var(--accent)}
+  .kc p{font-size:.8rem;color:var(--text2)}
+
+  /* step card */
+  .step{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:46px 1fr;gap:14px;align-items:start}
+  .badge{width:38px;height:38px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center}
+  .badge svg{width:21px;height:21px;color:#0d0f14}
+  .st .t{font-family:var(--display);font-weight:700;font-size:1.02rem;margin-bottom:5px}
+  .st .t span{font-family:var(--mono);font-size:.7rem;color:var(--text3);font-weight:400;margin-left:6px}
+  .st p{font-size:.85rem;color:var(--text2);margin-bottom:9px}
+  .st p:last-child{margin-bottom:0}
+
+  /* stat chips */
+  .stats{display:flex;flex-wrap:wrap;gap:7px}
+  .stat{font-size:.74rem;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:4px 10px}
+  .stat b{font-family:var(--mono);color:var(--text)}
+  .stat.warn b{color:var(--amber)}
+  .stat.bad b{color:var(--red)}
+
+  .arrow{display:flex;justify-content:center;color:var(--border2);height:22px;align-items:center}
+  .arrow svg{width:18px;height:18px}
+
+  /* pyramid */
+  .pyr{margin-top:10px}
+  .pyr .row{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+  .pyr .bar{height:15px;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:3px}
+  .pyr .lbl{font-size:.7rem;color:var(--text3);font-family:var(--mono);min-width:130px}
+
+  /* email mess */
+  .mess{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+  @media(max-width:600px){.mess{grid-template-columns:1fr}}
+  .mc{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:9px 11px}
+  .mc .mt{font-size:.76rem;font-weight:600;color:var(--text);margin-bottom:2px}
+  .mc .md{font-size:.71rem;color:var(--text3)}
+
+  /* split */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media(max-width:600px){.split{grid-template-columns:1fr}}
+  .sp{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 13px}
+  .sp .sh{font-weight:600;font-size:.82rem;margin-bottom:6px}
+  .sp.lead .sh{color:var(--green)} .sp.contact .sh{color:var(--accent)}
+  .sp ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+  .sp li{font-size:.76rem;color:var(--text2);padding-left:13px;position:relative}
+  .sp li::before{content:"·";position:absolute;left:3px;color:var(--text3)}
+
+  /* conversion diagram */
+  .conv{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:12px;flex-wrap:wrap}
+  .node{background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:9px 16px;font-size:.8rem;font-weight:600}
+  .node.l{color:var(--green)} .node.c{color:var(--accent)}
+  .link{display:flex;flex-direction:column;align-items:center;font-size:.66rem;color:var(--green)}
+  .link svg{width:46px;height:14px;color:var(--green)}
+  .link.broken{color:var(--red)} .link.broken svg{color:var(--red)}
+
+  /* example record */
+  .rec{background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:12px;padding:18px 20px;margin-top:14px}
+  .rec .rh{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+  .rec .nm{font-family:var(--display);font-weight:700;font-size:1.1rem}
+  .rec .tag{font-size:.7rem;background:rgba(34,197,94,.15);color:var(--green);padding:2px 9px;border-radius:100px}
+  .kv{display:grid;grid-template-columns:repeat(2,1fr);gap:7px 24px}
+  @media(max-width:600px){.kv{grid-template-columns:1fr}}
+  .kv .r{display:flex;justify-content:space-between;font-size:.8rem;border-bottom:1px solid var(--border);padding-bottom:5px}
+  .kv .k{color:var(--text3)} .kv .v{font-family:var(--mono);font-size:.76rem}
+  .kv .v.flag{color:var(--amber)}
+
+  .sec-h{font-family:var(--display);font-size:1.15rem;text-align:center;margin:34px 0 6px}
+  .why{background:rgba(79,124,255,.07);border:1px solid var(--border2);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:14px 18px;margin-top:14px;font-size:.86rem;color:var(--text2)}
+  .why b{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>How the <b>People Data</b> Is Generated</h1>
+  <p class="sub"><code style="font-family:var(--mono);color:var(--text2);font-size:.85rem">generate_people()</code> — casting 1,000 fake people, then dirtying the data like a real CRM</p>
+  <p class="intro">The job isn't to make tidy data. It's to make <i>realistically messy</i> data, so the scoring model has to prove it can cope with real-world mess.</p>
+
+  <div class="key">
+    <div class="kc lead"><div class="h">Lead — 600</div><p>A business card in the fishbowl. You have their info, but they're not formally filed yet. Top of funnel.</p></div>
+    <div class="kc contact"><div class="h">Contact — 400</div><p>A person properly filed under a company in your address book. Further along the journey.</p></div>
+  </div>
+
+  <!-- 1 -->
+  <div class="step">
+    <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5"/><circle cx="17" cy="9" r="2.3"/><path d="M16 14c2.5 0 5 1.5 5 4.5"/></svg></div>
+    <div class="st">
+      <div class="t">1 · The cast</div>
+      <p>Everyone gets a random first and last name from a big name bank. That's it — 1,000 blank people to start.</p>
+      <div class="stats"><span class="stat"><b>600</b> leads</span><span class="stat"><b>400</b> contacts</span><span class="stat"><b>1,000</b> total</span></div>
+    </div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+  <!-- 2 -->
+  <div class="step">
+    <div class="badge" style="background:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M9 16h6"/></svg></div>
+    <div class="st">
+      <div class="t">2 · Where do they work?</div>
+      <p>Each person is linked to one of the 200 companies — <b>but 15% get no company at all</b>, just like real CRMs full of floating, unattached records. That one gap weakens everything downstream.</p>
+      <div class="stats"><span class="stat warn"><b>15%</b> no company linked</span></div>
+    </div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+  <!-- 3 -->
+  <div class="step">
+    <div class="badge" style="background:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 17c0-1.7 1.3-3 3-3s3 1.3 3 3M14 9h5M14 13h5"/></svg></div>
+    <div class="st">
+      <div class="t">3 · Who are they?</div>
+      <p>Seniority follows a real org <b>pyramid</b> — few execs, many individual contributors. Persona says whether they're a real buyer or junk (competitor, vendor…). Lots is left blank, because people don't fill out forms.</p>
+      <div class="pyr">
+        <div class="row"><span class="lbl">C-Level</span><div class="bar" style="width:12%"></div></div>
+        <div class="row"><span class="lbl">VP</span><div class="bar" style="width:30%"></div></div>
+        <div class="row"><span class="lbl">Director</span><div class="bar" style="width:45%"></div></div>
+        <div class="row"><span class="lbl">Manager</span><div class="bar" style="width:62%"></div></div>
+        <div class="row"><span class="lbl">Individual Contrib.</span><div class="bar" style="width:100%"></div></div>
+      </div>
+      <div class="stats" style="margin-top:10px"><span class="stat warn"><b>40%</b> no persona</span><span class="stat warn"><b>~½</b> of rest = junk</span><span class="stat warn"><b>15%</b> no job level</span><span class="stat warn"><b>12%</b> no title</span><span class="stat warn"><b>18%</b> no phone</span></div>
+    </div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+  <!-- 4 -->
+  <div class="step">
+    <div class="badge" style="background:var(--amber)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
+    <div class="st">
+      <div class="t">4 · Their email — and the mess</div>
+      <p>A clean work email is built from name + company. Then reality is injected: some use free email (and the system misses a third of those), and duplicates are created on purpose in three flavors.</p>
+      <div class="mess">
+        <div class="mc"><div class="mt">Plain dupes</div><div class="md">one email pasted onto another record</div></div>
+        <div class="mc"><div class="mt">Shared mailboxes</div><div class="md">info@, sales@ — 4–8 records each</div></div>
+        <div class="mc"><div class="mt">Spam clusters</div><div class="md">one address on 10–14 records</div></div>
+      </div>
+      <div class="stats" style="margin-top:9px"><span class="stat warn"><b>8%</b> free email</span><span class="stat bad"><b>~35%</b> of those missed by the filter</span></div>
+    </div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+  <!-- 5 -->
+  <div class="step">
+    <div class="badge" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
+    <div class="st">
+      <div class="t">5 · Dates &amp; compliance</div>
+      <p>Many records get a fake "imported on this day" date instead of when the person really entered — so timestamps can't be trusted. Then the "be careful / don't bother" flags get stamped on.</p>
+      <div class="stats"><span class="stat warn"><b>80%</b> leads = fake date</span><span class="stat warn"><b>35%</b> contacts = fake date</span><span class="stat bad"><b>22%</b> opted out</span><span class="stat bad"><b>10%</b> bounced</span><span class="stat bad"><b>8%</b> left company</span></div>
+    </div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+  <!-- 6 -->
+  <div class="step">
+    <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v6a6 6 0 0 0 6 6 6 6 0 0 1 6 6v0M18 3v6"/><circle cx="6" cy="3" r="1.6"/><circle cx="18" cy="3" r="1.6"/><circle cx="18" cy="21" r="1.6"/></svg></div>
+    <div class="st">
+      <div class="t">6 · The split — leads vs contacts</div>
+      <p>Now they're split, and each type gets different fields — including the real-world annoyance that the <b>same score lives under different field names</b>.</p>
+      <div class="split">
+        <div class="sp lead"><div class="sh">Leads get</div><ul><li>28% MQL + lead status</li><li>Marketo score (10% reset to 0)</li><li>re-MQL cycle count, DQ reasons</li><li>ZoomInfo enrichment</li><li>messy self-typed company name</li></ul></div>
+        <div class="sp contact"><div class="sh">Contacts get</div><ul><li>35% MQL</li><li>score under a <i>different</i> field name</li><li>thinner overall — fewer extras</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+  <!-- 7 -->
+  <div class="step">
+    <div class="badge" style="background:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12a3 3 0 0 1 3-3h3a3 3 0 0 1 0 6M15 12a3 3 0 0 1-3 3H9a3 3 0 0 1 0-6"/></svg></div>
+    <div class="st">
+      <div class="t">7 · Conversion — linking lead to contact</div>
+      <p>200 leads "convert" into contacts, with pointers written both ways. <b>But 20% of those links are broken</b> — marked converted, yet the pointer is missing. A classic real bug: you know they converted, but not to what.</p>
+      <div class="conv">
+        <span class="node l">Lead</span>
+        <span class="link"><svg viewBox="0 0 46 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 7h40M34 2l6 5-6 5"/></svg>80% linked</span>
+        <span class="node c">Contact</span>
+        <span class="link broken"><svg viewBox="0 0 46 14" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3"><path d="M0 7h40M34 2l6 5-6 5"/></svg>20% broken</span>
+        <span class="node c" style="opacity:.4">?</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- example -->
+  <h2 class="sec-h">Meet a generated person</h2>
+  <div class="rec">
+    <div class="rh"><span class="nm">Sarah Johnson</span><span class="tag">Lead</span></div>
+    <div class="kv">
+      <div class="r"><span class="k">Company</span><span class="v">Nexus Systems</span></div>
+      <div class="r"><span class="k">Job level</span><span class="v">Individual Contributor</span></div>
+      <div class="r"><span class="k">Title</span><span class="v flag">— missing</span></div>
+      <div class="r"><span class="k">Email</span><span class="v flag">sarah.johnson@gmail.com</span></div>
+      <div class="r"><span class="k">Free-email caught?</span><span class="v flag">no (slipped through)</span></div>
+      <div class="r"><span class="k">Created date</span><span class="v flag">fake import date</span></div>
+      <div class="r"><span class="k">Email opt-out</span><span class="v flag">yes</span></div>
+      <div class="r"><span class="k">Marketo score</span><span class="v">47</span></div>
+    </div>
+    <p style="font-size:.8rem;color:var(--text3);margin-top:12px">She's realistic <i>because</i> she's incomplete and slightly broken — that's the whole point.</p>
+  </div>
+
+  <h2 class="sec-h">Why build it this way?</h2>
+  <div class="why">
+    A clean, tidy fake dataset would make the scoring model look good for the <b>wrong reasons</b>. By baking in missing fields, junk personas, duplicate emails, untrustworthy dates, and broken links, the data forces the model to <b>prove it can handle real mess</b> — which is exactly what the assignment is testing.
+  </div>
+</div>
+</body>
+</html>

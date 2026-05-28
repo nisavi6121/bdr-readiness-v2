@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Profile Fit Score</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0d0f14;--bg2:#13161e;--bg3:#1b1f2a;--border:#252a38;--border2:#2e3447;
+    --text:#e8eaf0;--text2:#9aa0b4;--text3:#5c6278;--accent:#4f7cff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+    --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--display:'Fraunces',Georgia,serif;--key:#a78bfa}
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:36px 20px 80px}
+  .wrap{max-width:820px;margin:0 auto}
+  .tag{text-align:center;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--key)}
+  h1{font-family:var(--display);font-weight:300;font-size:1.9rem;letter-spacing:-.02em;text-align:center;margin-top:4px}
+  h1 b{font-weight:700;color:var(--key)}
+  .sub{text-align:center;color:var(--text2);font-size:.88rem;margin:6px 0 22px}
+  .formula{background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--key);border-radius:10px;padding:14px 16px;font-family:var(--mono);font-size:.84rem;text-align:center;margin-bottom:14px}
+  .formula b{color:var(--key)}
+  .sec{font-family:var(--display);font-weight:700;font-size:1.02rem;margin:20px 0 8px;display:flex;align-items:center;gap:9px}
+  .sec .n{font-family:var(--mono);font-size:.72rem;color:#0d0f14;background:var(--key);border-radius:6px;padding:2px 9px}
+  p{font-size:.85rem;color:var(--text2);margin-bottom:8px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:620px){.cols{grid-template-columns:1fr}}
+  .ladder{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
+  .lh{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:7px}
+  .lrow{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .lrow .ln{min-width:120px;font-size:.74rem;color:var(--text2)}
+  .lbar{height:11px;border-radius:3px;background:var(--purple)}
+  .lrow .lv{font-family:var(--mono);font-size:.7rem;color:var(--text)}
+  .zero .lbar{background:var(--red)}
+  table{width:100%;border-collapse:collapse;font-size:.77rem}
+  th{text-align:left;color:var(--text3);font-weight:600;font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;padding:4px 6px;border-bottom:1px solid var(--border2)}
+  td{padding:5px 6px;border-bottom:1px solid var(--border);color:var(--text2)}
+  td.m{font-family:var(--mono);color:var(--text)}
+  tr:last-child td{border-bottom:none}
+  .callout{background:rgba(167,139,250,.08);border-left:3px solid var(--key);border-radius:0 7px 7px 0;padding:9px 12px;font-size:.79rem;color:var(--text2);margin-top:10px}
+  .callout b{color:var(--key)}
+  .ex{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;margin-top:8px;font-family:var(--mono);font-size:.8rem;color:var(--text2)}
+  .ex b{color:var(--key)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tag">readiness score · component 3 of 3</div>
+  <h1><b>Profile Fit</b> Score</h1>
+  <p class="sub">How senior and relevant is this individual?</p>
+
+  <div class="formula">profile_fit = ( <b>job_level_score</b> + <b>persona_score</b> ) ÷ 2</div>
+
+  <div class="sec"><span class="n">1</span> Two ladders</div>
+  <div class="cols">
+    <div class="ladder">
+      <div class="lh">Job level</div>
+      <div class="lrow"><span class="ln">C-Level</span><div class="lbar" style="width:100%"></div><span class="lv">1.0</span></div>
+      <div class="lrow"><span class="ln">VP</span><div class="lbar" style="width:85%"></div><span class="lv">.85</span></div>
+      <div class="lrow"><span class="ln">Director</span><div class="lbar" style="width:70%"></div><span class="lv">.70</span></div>
+      <div class="lrow"><span class="ln">Manager</span><div class="lbar" style="width:50%"></div><span class="lv">.50</span></div>
+      <div class="lrow"><span class="ln">Indiv. Contributor</span><div class="lbar" style="width:30%"></div><span class="lv">.30</span></div>
+    </div>
+    <div class="ladder">
+      <div class="lh">Persona</div>
+      <div class="lrow"><span class="ln">CISO</span><div class="lbar" style="width:100%"></div><span class="lv">1.0</span></div>
+      <div class="lrow"><span class="ln">Technical Buyer</span><div class="lbar" style="width:85%"></div><span class="lv">.85</span></div>
+      <div class="lrow"><span class="ln">Financial Buyer</span><div class="lbar" style="width:70%"></div><span class="lv">.70</span></div>
+      <div class="lrow"><span class="ln">Influencer</span><div class="lbar" style="width:50%"></div><span class="lv">.50</span></div>
+      <div class="lrow zero"><span class="ln">Non-Prospect</span><div class="lbar" style="width:5%"></div><span class="lv">0.0</span></div>
+    </div>
+  </div>
+
+  <div class="sec"><span class="n">2</span> Missing values → within-type median</div>
+  <p>This is the one component that <b>explicitly imputes</b>. Missing level/persona is filled with the <b>median of that person's own entity type</b> (leads and contacts separately), computed on the derived score, with a 0.30 floor.</p>
+  <table>
+    <tr><th></th><th>job_level missing</th><th>persona missing</th></tr>
+    <tr><td>Leads (600)</td><td class="m">75 (~12%)</td><td class="m">248 (~41%)</td></tr>
+    <tr><td>Contacts (400)</td><td class="m">66 (~17%)</td><td class="m">152 (~38%)</td></tr>
+  </table>
+  <p style="margin-top:6px;font-size:.78rem;color:var(--text3)">~40% of persona is blank — a global mean would unfairly judge sparse leads against richer contacts. Per-type median keeps it fair.</p>
+
+  <div class="callout"><b>Sentinel, not missing:</b> Non-Prospects map to a real <b>0.0</b> (not NaN), so the median <b>never</b> lifts them. "I know they're a competitor" ≠ "I don't know who they are."</div>
+
+  <div class="sec"><span class="n">3</span> Non-prospect override (at scoring)</div>
+  <p>For any Non-Prospect, both account fit and profile fit are <b>forced to 0</b> at score time — internal consistency, since they're hard-blocked anyway (304 records).</p>
+
+  <div class="ex">
+    L00014: VP (0.85) + Technical Buyer (0.85) → avg <b>0.85</b> → ×100 → <b>profile_fit = 85</b>
+  </div>
+</div>
+</body>
+</html>

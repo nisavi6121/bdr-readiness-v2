@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>How the Score Stage Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0d0f14;--bg2:#13161e;--bg3:#1b1f2a;
+    --border:#252a38;--border2:#2e3447;
+    --text:#e8eaf0;--text2:#9aa0b4;--text3:#5c6278;
+    --accent:#4f7cff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+    --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--display:'Fraunces',Georgia,serif;
+  }
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:36px 20px 80px}
+  .wrap{max-width:840px;margin:0 auto}
+  h1{font-family:var(--display);font-weight:300;font-size:1.85rem;letter-spacing:-.02em;text-align:center}
+  h1 b{font-weight:700;color:var(--accent)}
+  .sub{text-align:center;color:var(--text2);font-size:.9rem;margin:8px 0 8px}
+  .intro{text-align:center;color:var(--text3);font-size:.84rem;max-width:600px;margin:0 auto 24px}
+
+  .sec-h{font-family:var(--display);font-size:1.12rem;margin:24px 0 10px;display:flex;align-items:center;gap:9px}
+  .sec-h .n{font-family:var(--mono);font-size:.74rem;color:#0d0f14;background:var(--accent);border-radius:6px;padding:2px 9px}
+
+  /* normalize 3 cards */
+  .norm{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  @media(max-width:680px){.norm{grid-template-columns:1fr}}
+  .nc{background:var(--bg2);border:1px solid var(--border);border-top-width:3px;border-radius:10px;padding:12px 14px}
+  .nc .nt{font-weight:700;font-size:.9rem;margin-bottom:4px}
+  .nc .nf{font-family:var(--mono);font-size:.72rem;color:var(--text2);background:var(--bg3);border-radius:5px;padding:5px 8px;margin:7px 0}
+  .nc .nd{font-size:.76rem;color:var(--text3)}
+  .nc.eng{border-top-color:var(--accent)} .nc.acc{border-top-color:var(--green)} .nc.prof{border-top-color:var(--purple)}
+
+  .callout{background:rgba(79,124,255,.07);border-left:3px solid var(--accent);border-radius:0 7px 7px 0;padding:10px 13px;font-size:.8rem;color:var(--text2);margin-top:12px}
+  .callout b{color:var(--accent)}
+
+  /* max vs 95th */
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media(max-width:600px){.cmp{grid-template-columns:1fr}}
+  .chart{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+  .chart .ch{font-size:.78rem;font-weight:600;margin-bottom:3px}
+  .chart .csub{font-size:.7rem;color:var(--text3);margin-bottom:10px}
+  .bars{display:flex;align-items:flex-end;gap:3px;height:80px}
+  .bars .b{flex:1;border-radius:2px 2px 0 0}
+  .bad .ch{color:var(--red)} .good .ch{color:var(--green)}
+  .bad .b{background:var(--red);opacity:.55} .good .b{background:var(--green);opacity:.7}
+  .bad .b.out,.good .b.out{opacity:1}
+
+  /* weight blend */
+  .wrow{margin-bottom:10px}
+  .wrow .wl{font-size:.78rem;color:var(--text2);margin-bottom:4px}
+  .wbar{display:flex;height:26px;border-radius:6px;overflow:hidden}
+  .seg{display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;color:#0d0f14}
+  .w-eng{background:var(--accent)} .w-acc{background:var(--green)} .w-prof{background:var(--purple)}
+  .blend-ex{font-family:var(--mono);font-size:.78rem;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:9px 12px;margin-top:8px}
+  .blend-ex b{color:var(--accent)}
+
+  /* confidence bar */
+  .confbar{display:flex;height:30px;border-radius:6px;overflow:hidden;border:1px solid var(--border2);margin-top:6px}
+  .confbar div{display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;color:#0d0f14}
+  .cf-h{background:var(--green)} .cf-m{background:var(--amber)} .cf-l{background:var(--red)}
+
+  /* dist table */
+  table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:6px}
+  th{text-align:left;color:var(--text3);font-weight:600;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;padding:5px 7px;border-bottom:1px solid var(--border2)}
+  td{padding:5px 7px;border-bottom:1px solid var(--border);color:var(--text2)}
+  td.m{font-family:var(--mono);color:var(--text)}
+  td.hot{font-family:var(--mono);color:var(--amber);font-weight:600}
+  tr:last-child td{border-bottom:none}
+
+  .stat{display:inline-block;font-size:.74rem;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:4px 10px;margin:3px 4px 0 0}
+  .stat b{font-family:var(--mono);color:var(--text)}
+
+  .why{background:rgba(245,158,11,.07);border:1px solid var(--border2);border-left:3px solid var(--amber);border-radius:0 10px 10px 0;padding:14px 18px;margin-top:18px;font-size:.86rem;color:var(--text2)}
+  .why b{color:var(--amber)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>How the <b>Score Stage</b> Works</h1>
+  <p class="sub"><code style="font-family:var(--mono);color:var(--text2);font-size:.85rem">03_score.py</code> — three ingredients → one comparable 0-100 score</p>
+  <p class="intro">Make the three signals comparable, blend them with type-specific weights, and tag confidence on a separate axis.</p>
+
+  <!-- MOVE 1 -->
+  <div class="sec-h"><span class="n">1</span> Normalize to 0-100 — and notice the asymmetry</div>
+  <div class="norm">
+    <div class="nc eng">
+      <div class="nt" style="color:var(--accent)">Engagement</div>
+      <div class="nf">(raw ÷ 95th-pct ceiling)<br/>.clip(0,1) × 100</div>
+      <div class="nd">The wild one — an unbounded sum. Normalized <b>within entity type</b>. Top 5% saturate at 100.</div>
+    </div>
+    <div class="nc acc">
+      <div class="nt" style="color:var(--green)">Account fit</div>
+      <div class="nf">already 0-100<br/>→ clip &amp; round</div>
+      <div class="nd">Built bounded (raw × multiplier ≤ 100). Not re-normalized.</div>
+    </div>
+    <div class="nc prof">
+      <div class="nt" style="color:var(--purple)">Profile fit</div>
+      <div class="nf">signal (0-1)<br/>× 100</div>
+      <div class="nd">Already on a 0-1 scale. Just rescaled.</div>
+    </div>
+  </div>
+  <div class="callout"><b>Why only engagement?</b> It's an unbounded sum ranging into the thousands (ceilings: Lead 1,452 · Contact 1,622). The other two are already calibrated — normalizing them again would distort a meaningful scale.</div>
+
+  <!-- max vs 95th -->
+  <div class="sec-h"><span class="n">★</span> Why the 95th percentile, not the max</div>
+  <div class="cmp">
+    <div class="chart bad">
+      <div class="ch">Normalize by MAX ✗</div>
+      <div class="csub">one outlier defines the ceiling → everyone squashed</div>
+      <div class="bars">
+        <div class="b" style="height:3%"></div><div class="b" style="height:4%"></div><div class="b" style="height:6%"></div><div class="b" style="height:7%"></div><div class="b" style="height:9%"></div><div class="b" style="height:11%"></div><div class="b" style="height:13%"></div><div class="b" style="height:16%"></div><div class="b" style="height:19%"></div><div class="b out" style="height:100%"></div>
+      </div>
+    </div>
+    <div class="chart good">
+      <div class="ch">Normalize by 95th-pct ✓</div>
+      <div class="csub">ignores the top-5% spikes → scores spread out</div>
+      <div class="bars">
+        <div class="b" style="height:20%"></div><div class="b" style="height:27%"></div><div class="b" style="height:34%"></div><div class="b" style="height:41%"></div><div class="b" style="height:48%"></div><div class="b" style="height:55%"></div><div class="b" style="height:67%"></div><div class="b" style="height:80%"></div><div class="b out" style="height:100%"></div><div class="b out" style="height:100%"></div>
+      </div>
+    </div>
+  </div>
+  <div class="callout">Cost of the 95th-pct approach: the top 5% all read 100, so you can't rank <i>within</i> the very hottest — fine, they're all "call now." In your data exactly <b>5.2% of each type saturates at 100</b>.</div>
+
+  <!-- MOVE 2 -->
+  <div class="sec-h"><span class="n">2</span> Non-prospect override</div>
+  <p style="font-size:.84rem;color:var(--text2)">Any non-prospect has account fit and profile fit <b>forced to 0</b> — a competitor shouldn't display "great account fit," even though they're blocked anyway. Keeps the score internally honest.</p>
+  <div><span class="stat"><b>304</b> non-prospects</span><span class="stat">account_fit → <b>0</b></span><span class="stat">profile_fit → <b>0</b></span></div>
+
+  <!-- MOVE 3 -->
+  <div class="sec-h"><span class="n">3</span> The weighted blend — differentiated by type</div>
+  <div class="wrow">
+    <div class="wl">Lead — leans on engagement (newer, thin firmographics)</div>
+    <div class="wbar"><div class="seg w-eng" style="width:75%">75 eng</div><div class="seg w-acc" style="width:15%">15</div><div class="seg w-prof" style="width:10%">10</div></div>
+  </div>
+  <div class="wrow">
+    <div class="wl">Contact — more account weight (richer data)</div>
+    <div class="wbar"><div class="seg w-eng" style="width:60%">60 eng</div><div class="seg w-acc" style="width:25%">25 acct</div><div class="seg w-prof" style="width:15%">15</div></div>
+  </div>
+  <div class="blend-ex">Real example — L00014 (Lead): <b>100</b>×0.75 + <b>81.4</b>×0.15 + <b>85</b>×0.10 = <b>95.7</b> → Call Now</div>
+
+  <!-- MOVE 4 -->
+  <div class="sec-h"><span class="n">4</span> Store weights + confidence (a separate axis)</div>
+  <p style="font-size:.84rem;color:var(--text2)">The per-record weights are saved (they power the app's sunburst, so the score is auditable from the CSV). <b>Confidence</b> comes from the DQ-flag count — independent of readiness. A white-hot lead can still be Medium.</p>
+  <div class="confbar"><div class="cf-h" style="width:67.6%">High 676</div><div class="cf-m" style="width:27%">Medium 270</div><div class="cf-l" style="width:5.4%">Low 54</div></div>
+
+  <!-- DISTRIBUTION -->
+  <div class="sec-h"><span class="n">5</span> What the scores actually look like</div>
+  <table>
+    <tr><th>Score</th><th>mean</th><th>median</th><th>95th</th><th>max</th></tr>
+    <tr><td>engagement</td><td class="m">19.1</td><td class="hot">0.1</td><td class="m">100</td><td class="m">100</td></tr>
+    <tr><td>account fit</td><td class="m">24.7</td><td class="m">14.3</td><td class="m">76.5</td><td class="m">99.8</td></tr>
+    <tr><td>profile fit</td><td class="m">29.5</td><td class="m">25.0</td><td class="m">77.5</td><td class="m">100</td></tr>
+    <tr><td><b style="color:var(--text)">final</b></td><td class="m">21.2</td><td class="hot">12.9</td><td class="m">72.2</td><td class="m">96.5</td></tr>
+  </table>
+  <div class="callout">
+    <b>Engagement is heavily zero-inflated</b> (median 0.1) — ~51% of leads and ~47% of contacts have <i>no</i> genuine engagement. The model is correctly saying most people aren't ready now.<br/>
+    <b>The final score is selective</b> — median ~13 with a long tail to 96. Most sit low, a select few score high: exactly the "top 500 to call" shape, not a list where everyone looks hot.
+  </div>
+
+  <div class="why">
+    The score stage is all about <b>robust, fair comparison</b>: 95th-pct normalization within type (outliers can't squash the field, leads vs contacts judged separately), only the wild signal normalized, differentiated weights, non-prospect zeroing for honesty, stored weights for transparency, and confidence as an independent axis. Out comes <code style="font-family:var(--mono);font-size:.82rem">scored.csv</code>.
+  </div>
+</div>
+</body>
+</html>

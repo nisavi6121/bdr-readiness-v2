@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>generate.py — internal flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0d0f14;--bg2:#13161e;--bg3:#1b1f2a;
+    --border:#252a38;--border2:#2e3447;
+    --text:#e8eaf0;--text2:#9aa0b4;--text3:#5c6278;
+    --accent:#4f7cff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+    --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--display:'Fraunces',Georgia,serif;
+  }
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;padding:34px 20px 80px}
+  .wrap{max-width:840px;margin:0 auto}
+  h1{font-family:var(--display);font-weight:300;font-size:1.7rem;letter-spacing:-.02em;text-align:center}
+  h1 code{font-family:var(--mono);font-weight:500;color:var(--accent);font-size:1.3rem}
+  .sub{text-align:center;color:var(--text3);font-size:.82rem;margin:6px 0 18px}
+
+  /* color legend */
+  .legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;font-size:.74rem;color:var(--text2)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .acc{background:var(--purple)} .camp{background:var(--accent)} .ppl{background:var(--green)} .cm{background:var(--amber)}
+
+  /* function node */
+  .fn{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:15px 18px}
+  .fn-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .step{width:24px;height:24px;border-radius:7px;background:var(--bg3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.78rem;color:var(--text2);flex-shrink:0}
+  .fname{font-family:var(--mono);font-size:.86rem;color:var(--text)}
+  .out{margin-left:auto;font-family:var(--mono);font-size:.74rem;font-weight:600;color:#0d0f14;padding:3px 11px;border-radius:100px}
+  .out::before{content:"→ "}
+
+  .uses{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:9px}
+  .uses .ul{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text3)}
+  .dep{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:100px;padding:2px 9px}
+  .dep i{width:8px;height:8px;border-radius:2px;display:inline-block}
+  .none{font-size:.72rem;color:var(--text3);font-style:italic}
+
+  .steps{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:.72rem;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:3px 9px}
+  .chip.dq{color:var(--amber);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)}
+  .chip b{color:var(--text)}
+
+  .arrow{display:flex;justify-content:center;color:var(--border2);height:24px;align-items:center}
+  .arrow svg{width:20px;height:20px}
+
+  .write{background:var(--bg2);border:1px dashed var(--border2);border-radius:12px;padding:14px 18px;text-align:center}
+  .write .wl{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:8px}
+  .write .files{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+  .write .f{font-family:var(--mono);font-size:.72rem;color:var(--text2);background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:3px 8px}
+
+  .cap{text-align:center;font-size:.74rem;color:var(--text3);margin-top:18px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1><code>generate_all()</code> — internal flow</h1>
+  <p class="sub">call order top → bottom · colored tags show which populations each step consumes</p>
+
+  <div class="legend">
+    <span><i class="acc"></i>accounts</span>
+    <span><i class="camp"></i>campaigns</span>
+    <span><i class="ppl"></i>leads + contacts</span>
+    <span><i class="cm"></i>campaign_members</span>
+  </div>
+
+  <!-- 1 accounts -->
+  <div class="fn">
+    <div class="fn-top"><div class="step">1</div><span class="fname">generate_accounts(200)</span><span class="out acc" style="background:var(--purple)">accounts ×200</span></div>
+    <div class="uses"><span class="ul">uses</span><span class="none">nothing — root table</span></div>
+    <div class="steps"><span class="chip">industry + employee bands</span><span class="chip"><b>20%</b> named</span><span class="chip"><b>4%</b> do-not-contact</span><span class="chip">intent 0–100</span><span class="chip">revenue ∝ size</span></div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- 2 campaigns -->
+  <div class="fn">
+    <div class="fn-top"><div class="step">2</div><span class="fname">generate_campaigns(60)</span><span class="out" style="background:var(--accent)">campaigns ×60</span></div>
+    <div class="uses"><span class="ul">uses</span><span class="none">nothing — root table</span></div>
+    <div class="steps"><span class="chip"><b>40</b> historical</span><span class="chip"><b>15</b> recent (2025)</span><span class="chip"><b>5</b> very-recent</span><span class="chip">recent forced Webinar/Event</span></div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- 3 people -->
+  <div class="fn">
+    <div class="fn-top"><div class="step">3</div><span class="fname">generate_people(600, 400, 200)</span><span class="out" style="background:var(--green)">leads + contacts ×1000</span></div>
+    <div class="uses"><span class="ul">uses</span><span class="dep"><i class="acc"></i>accounts</span></div>
+    <div class="steps">
+      <span class="chip dq">DQ-7 missing fields</span><span class="chip dq">DQ-6 contamination</span><span class="chip dq">DQ-11 free-email</span>
+      <span class="chip dq">DQ-2 dup emails</span><span class="chip dq">DQ-4 ETL dates</span><span class="chip dq">DQ-9 opt-out/bounce</span>
+      <span class="chip dq">DQ-5 score fields</span><span class="chip dq">DQ-10 re-MQL reset</span><span class="chip dq">DQ-1/3 conversion link</span>
+    </div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- 4 campaign members -->
+  <div class="fn">
+    <div class="fn-top"><div class="step">4</div><span class="fname">generate_campaign_members(5000)</span><span class="out" style="background:var(--amber)">campaign_members ~5k</span></div>
+    <div class="uses"><span class="ul">uses</span>
+      <span class="dep"><i class="acc"></i>accounts</span>
+      <span class="dep"><i class="camp"></i>campaigns</span>
+      <span class="dep"><i class="ppl"></i>leads</span>
+      <span class="dep"><i class="ppl"></i>contacts</span>
+    </div>
+    <div class="steps"><span class="chip"><b>weighted</b> engagement (acct × persona)</span><span class="chip">recency bias → recent campaigns</span><span class="chip dq">DQ-8 automation inflation</span><span class="chip dq">DQ-2 mailbox cloning</span></div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- 5 inject -->
+  <div class="fn" style="border-color:var(--border2)">
+    <div class="fn-top"><div class="step">5</div><span class="fname">_inject_persona_guarantees(...)</span><span class="out" style="background:var(--text2)">patches all</span></div>
+    <div class="uses"><span class="ul">uses</span>
+      <span class="dep"><i class="acc"></i>accounts</span>
+      <span class="dep"><i class="camp"></i>campaigns</span>
+      <span class="dep"><i class="ppl"></i>leads+contacts</span>
+      <span class="dep"><i class="cm"></i>campaign_members</span>
+    </div>
+    <div class="steps"><span class="chip"><b>P1</b> VP/CL · named ICP · MQL</span><span class="chip"><b>P10</b> orphan contact · high intent</span><span class="chip">promote nearest match if none</span><span class="chip">append genuine recent events</span></div>
+  </div>
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- write -->
+  <div class="write">
+    <div class="wl">write to data/raw/</div>
+    <div class="files"><span class="f">accounts.csv</span><span class="f">campaigns.csv</span><span class="f">leads.csv</span><span class="f">contacts.csv</span><span class="f">campaign_members.csv</span></div>
+  </div>
+
+  <p class="cap">
+    Steps 1–2 are independent roots. Step 3 needs <b style="color:var(--purple)">accounts</b>.
+    Step 4 fans in <b style="color:var(--purple)">accounts</b> + <b style="color:var(--accent)">campaigns</b> + <b style="color:var(--green)">people</b> —
+    that's where engagement gets weighted by account quality.<br/>
+    Step 5 touches everything to guarantee the hard personas, then all five tables are written.
+  </p>
+</div>
+</body>
+</html>

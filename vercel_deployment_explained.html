@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>How the Vercel Deployment Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0d0f14;--bg2:#13161e;--bg3:#1b1f2a;
+    --border:#252a38;--border2:#2e3447;
+    --text:#e8eaf0;--text2:#9aa0b4;--text3:#5c6278;
+    --accent:#4f7cff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+    --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--display:'Fraunces',Georgia,serif;
+  }
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:36px 20px 80px}
+  .wrap{max-width:840px;margin:0 auto}
+  h1{font-family:var(--display);font-weight:300;font-size:1.85rem;letter-spacing:-.02em;text-align:center}
+  h1 b{font-weight:700;color:var(--accent)}
+  .sub{text-align:center;color:var(--text2);font-size:.9rem;margin:8px 0 8px}
+  .intro{text-align:center;color:var(--text3);font-size:.84rem;max-width:620px;margin:0 auto 24px}
+
+  /* lifecycle hero */
+  .lc{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 16px;margin-bottom:24px}
+  .lc-h{font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:14px;text-align:center}
+  .lanes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;align-items:start}
+  @media(max-width:620px){.lanes{grid-template-columns:1fr 1fr}}
+  .lane{text-align:center}
+  .actor{font-family:var(--mono);font-size:.74rem;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:6px 10px;margin-bottom:8px;display:inline-block;min-width:88px}
+  .actor.you{color:var(--accent)} .actor.gh{color:var(--purple)} .actor.vc{color:var(--green)} .actor.user{color:var(--amber)}
+  .ev{font-size:.7rem;color:var(--text3);background:var(--bg3);border-radius:5px;padding:5px 6px;margin-bottom:4px}
+  .ev b{color:var(--text2)}
+  .between{display:flex;align-items:center;justify-content:center;color:var(--border2);margin:8px 0}
+  .between svg{width:18px;height:14px}
+
+  .sec-h{font-family:var(--display);font-size:1.12rem;margin:24px 0 10px;display:flex;align-items:center;gap:9px}
+  .sec-h .n{font-family:var(--mono);font-size:.74rem;color:#0d0f14;background:var(--accent);border-radius:6px;padding:2px 9px}
+
+  /* serverless vs traditional */
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+  @media(max-width:600px){.cmp{grid-template-columns:1fr}}
+  .card{background:var(--bg2);border:1px solid var(--border);border-top:3px solid;border-radius:10px;padding:13px 15px}
+  .card.trad{border-top-color:var(--text3)}
+  .card.srv{border-top-color:var(--green)}
+  .card .ch{font-weight:700;font-size:.92rem;margin-bottom:5px}
+  .card.trad .ch{color:var(--text2)} .card.srv .ch{color:var(--green)}
+  .card ul{list-style:none;display:flex;flex-direction:column;gap:5px;margin-top:6px}
+  .card li{font-size:.78rem;color:var(--text2);padding-left:14px;position:relative}
+  .card li::before{content:"·";position:absolute;left:5px;color:var(--text3)}
+
+  /* vercel.json annotated */
+  .code{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:11px 14px;font-family:var(--mono);font-size:.78rem;line-height:1.7;color:var(--text);overflow-x:auto}
+  .code .k{color:var(--purple)}
+  .code .s{color:var(--green)}
+  .code .c{color:var(--text3);font-style:italic}
+  .annot{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media(max-width:600px){.annot{grid-template-columns:1fr}}
+  .ann{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;font-size:.76rem;color:var(--text2)}
+  .ann b{display:block;color:var(--accent);font-family:var(--mono);font-size:.74rem;margin-bottom:2px}
+
+  /* gitignore split */
+  .gitcols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+  @media(max-width:600px){.gitcols{grid-template-columns:1fr}}
+  .gc{background:var(--bg2);border:1px solid var(--border);border-left:3px solid;border-radius:10px;padding:12px 14px}
+  .gc.keep{border-left-color:var(--green)} .gc.skip{border-left-color:var(--text3)}
+  .gc .gh{font-weight:600;font-size:.84rem;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+  .gc.keep .gh{color:var(--green)} .gc.skip .gh{color:var(--text2)}
+  .gc ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+  .gc li{font-family:var(--mono);font-size:.72rem;color:var(--text2);padding-left:14px;position:relative}
+  .gc.keep li::before{content:"✓";color:var(--green);position:absolute;left:0}
+  .gc.skip li::before{content:"✗";color:var(--text3);position:absolute;left:0}
+
+  /* cold/warm */
+  .timing{margin-top:6px}
+  .trow{display:flex;align-items:center;gap:10px;margin-bottom:7px;font-size:.8rem}
+  .tlab{min-width:110px;color:var(--text2)}
+  .tbar{height:20px;border-radius:4px;display:flex;align-items:center;padding-left:9px;color:#0d0f14;font-weight:600;font-size:.72rem;min-width:40px}
+  .cold{background:var(--amber)} .warm{background:var(--green)}
+  .tnote{font-size:.74rem;color:var(--text3);margin-top:4px}
+
+  /* limits */
+  table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:6px}
+  th{text-align:left;color:var(--text3);font-weight:600;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;padding:5px 8px;border-bottom:1px solid var(--border2)}
+  td{padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text2)}
+  td.m{font-family:var(--mono);color:var(--text)}
+  tr:last-child td{border-bottom:none}
+
+  .why{background:rgba(34,197,94,.07);border:1px solid var(--border2);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:14px 18px;margin-top:18px;font-size:.86rem;color:var(--text2)}
+  .why b{color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>How the <b>Vercel</b> Deployment Works</h1>
+  <p class="sub">git push → live public URL, in ~60 seconds</p>
+  <p class="intro">You don't manage a server. You push to GitHub, Vercel builds your Flask app as a <b>serverless function</b>, and gives you a URL. Here's what's actually happening.</p>
+
+  <!-- LIFECYCLE HERO -->
+  <div class="lc">
+    <div class="lc-h">end-to-end lifecycle</div>
+    <div class="lanes">
+      <div class="lane"><div class="actor you">you</div><div class="ev"><b>git push</b></div></div>
+      <div class="lane"><div class="actor gh">GitHub</div><div class="ev">webhook fires</div></div>
+      <div class="lane"><div class="actor vc">Vercel</div><div class="ev">clone repo</div><div class="ev">read <b>vercel.json</b></div><div class="ev">pip install</div><div class="ev">bundle code+CSVs</div><div class="ev">deploy to edge</div><div class="ev">issue URL</div></div>
+      <div class="lane"><div class="actor user">user</div><div class="ev">visits URL</div><div class="ev">request hits app</div></div>
+    </div>
+    <div class="between"><svg viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 7h18M14 2l5 5-5 5"/></svg></div>
+    <p style="text-align:center;font-size:.78rem;color:var(--text3);margin:0">No servers to provision. No clicks. Subsequent pushes redeploy automatically.</p>
+  </div>
+
+  <!-- STEP 1: serverless model -->
+  <div class="sec-h"><span class="n">1</span> The runtime model — <span style="color:var(--green)">serverless</span></div>
+  <p style="font-size:.84rem;color:var(--text2)">The single biggest concept. Vercel doesn't run your app as a long-living server.</p>
+  <div class="cmp">
+    <div class="card trad">
+      <div class="ch">Traditional server (Docker / Cloud Run)</div>
+      <ul>
+        <li>One Python process always running</li>
+        <li>Port open, listening</li>
+        <li>Already warm — fast responses</li>
+        <li>Costs $ while idle</li>
+      </ul>
+    </div>
+    <div class="card srv">
+      <div class="ch">Serverless (Vercel)</div>
+      <ul>
+        <li>No process when no traffic</li>
+        <li>Request arrives → spin up Python, run, return</li>
+        <li>Warm instance reused for next request</li>
+        <li>Idle = $0</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:.78rem;color:var(--text3);margin-top:10px">Your app works perfectly here because it's <b>read-only and stateless</b>. The DataFrame in module memory survives within a warm instance.</p>
+
+  <!-- STEP 2: vercel.json -->
+  <div class="sec-h"><span class="n">2</span> What <code style="font-family:var(--mono);font-size:.86rem;color:var(--accent)">vercel.json</code> tells Vercel</div>
+  <div class="code">
+{<br/>
+&nbsp;&nbsp;<span class="k">"builds"</span>: [{ <span class="k">"src"</span>: <span class="s">"app.py"</span>, <span class="k">"use"</span>: <span class="s">"@vercel/python"</span> }],<br/>
+&nbsp;&nbsp;<span class="k">"routes"</span>: [{ <span class="k">"src"</span>: <span class="s">"/(.*)"</span>, <span class="k">"dest"</span>: <span class="s">"app.py"</span> }]<br/>
+}
+  </div>
+  <div class="annot">
+    <div class="ann"><b>builds</b>"For app.py, use the @vercel/python builder." Recipe that installs deps from requirements.txt and packages your Flask app as a serverless function.</div>
+    <div class="ann"><b>routes</b>"Send every URL (the (.*) regex catches all) to app.py." Flask then matches its own internal routes (/, /record/&lt;id&gt;, /methodology, /knowledge-base, /guide).</div>
+  </div>
+
+  <!-- STEP 3: the data trick -->
+  <div class="sec-h"><span class="n">3</span> The data pre-commit trick</div>
+  <p style="font-size:.84rem;color:var(--text2)">Vercel's filesystem is <b>read-only at runtime</b>, and the pipeline takes too long to run on each cold start. The trick: ship the final CSVs in the repo, gitignore the intermediates.</p>
+  <div class="gitcols">
+    <div class="gc keep">
+      <div class="gh">Committed (rides into the bundle)</div>
+      <ul>
+        <li>data/scored/ranked_records.csv</li>
+        <li>data/cleaned/campaign_members.csv</li>
+      </ul>
+    </div>
+    <div class="gc skip">
+      <div class="gh">Gitignored (intermediates)</div>
+      <ul>
+        <li>data/raw/</li>
+        <li>data/features/</li>
+        <li>data/scored/scored.csv</li>
+        <li>data/cleaned/people.csv</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:.78rem;color:var(--text3);margin-top:10px"><b style="color:var(--accent)">_load()</b> finds the ranked CSV present → skips the pipeline → goes straight to read. Pipeline runs locally; production reads the artifact.</p>
+
+  <!-- STEP 4: cold vs warm -->
+  <div class="sec-h"><span class="n">4</span> Cold vs warm requests</div>
+  <div class="timing">
+    <div class="trow"><span class="tlab">Cold start</span><div class="tbar cold" style="width:75%">~2-4 s</div></div>
+    <div class="trow"><span class="tlab">Warm request</span><div class="tbar warm" style="width:6%">50-100 ms</div></div>
+    <div class="tnote"><b>Cold</b> = Python boots, deps load, app.py imports, <code style="font-family:var(--mono);font-size:.78rem">_load()</code> reads the CSVs into memory. <b>Warm</b> = DataFrame already in memory — just a filter + render.</div>
+  </div>
+
+  <!-- LIMITS -->
+  <div class="sec-h"><span class="n">5</span> Practical limits (Hobby tier)</div>
+  <table>
+    <tr><th>Limit</th><th>Value</th><th>Your app</th></tr>
+    <tr><td>Function execution time</td><td class="m">~10 s</td><td>way under (filter + render is ms)</td></tr>
+    <tr><td>Function size (uncompressed)</td><td class="m">~250 MB</td><td>way under (code + small CSVs)</td></tr>
+    <tr><td>Memory</td><td class="m">1024 MB</td><td>plenty for a 1k-row DataFrame</td></tr>
+    <tr><td>Filesystem</td><td class="m">read-only</td><td>handled — CSVs pre-committed</td></tr>
+    <tr><td>Preview URLs</td><td class="m">every branch</td><td>great for sharing in-progress work</td></tr>
+  </table>
+
+  <div class="why">
+    <b>The whole story in one sentence:</b> push to git → Vercel runs <code style="font-family:var(--mono);font-size:.82rem">@vercel/python</code> to bundle app.py + 4 deps + pre-committed CSVs → every URL routes to your Flask app via the catch-all in <code style="font-family:var(--mono);font-size:.82rem">vercel.json</code> → cold starts load the CSVs into memory once per warm instance, then every request is just a DataFrame filter.
+  </div>
+</div>
+</body>
+</html>

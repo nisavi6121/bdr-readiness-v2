@@ -1,0 +1,10 @@
+frontend/
+data/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+.git/
+.gitignore
+*.md
+run.sh

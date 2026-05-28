@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Engagement Score</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0d0f14;--bg2:#13161e;--bg3:#1b1f2a;--border:#252a38;--border2:#2e3447;
+    --text:#e8eaf0;--text2:#9aa0b4;--text3:#5c6278;--accent:#4f7cff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+    --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--display:'Fraunces',Georgia,serif;--key:#4f7cff}
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:36px 20px 80px}
+  .wrap{max-width:820px;margin:0 auto}
+  .tag{text-align:center;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--key)}
+  h1{font-family:var(--display);font-weight:300;font-size:1.9rem;letter-spacing:-.02em;text-align:center;margin-top:4px}
+  h1 b{font-weight:700;color:var(--key)}
+  .sub{text-align:center;color:var(--text2);font-size:.88rem;margin:6px 0 22px}
+  .formula{background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--key);border-radius:10px;padding:14px 16px;font-family:var(--mono);font-size:.86rem;text-align:center;margin-bottom:6px}
+  .formula b{color:var(--key)}
+  .note{text-align:center;font-size:.76rem;color:var(--amber);margin-bottom:20px}
+  .sec{font-family:var(--display);font-weight:700;font-size:1.02rem;margin:20px 0 8px;display:flex;align-items:center;gap:9px}
+  .sec .n{font-family:var(--mono);font-size:.72rem;color:#0d0f14;background:var(--key);border-radius:6px;padding:2px 9px}
+  p{font-size:.85rem;color:var(--text2);margin-bottom:8px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:620px){.cols{grid-template-columns:1fr}}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+  .decay svg{width:100%;height:74px}
+  .dl{display:flex;justify-content:space-between;font-size:.66rem;color:var(--text3);font-family:var(--mono);margin-top:2px}
+  .fbox{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;font-family:var(--mono);font-size:.76rem;color:var(--text);line-height:1.9;margin-top:10px}
+  .fbox .c{color:var(--text3)}
+  .fbox b{color:var(--key)}
+  table{width:100%;border-collapse:collapse;font-size:.77rem}
+  th{text-align:left;color:var(--text3);font-weight:600;font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;padding:4px 6px;border-bottom:1px solid var(--border2)}
+  td{padding:4px 6px;border-bottom:1px solid var(--border);color:var(--text2)}
+  td.m{font-family:var(--mono);color:var(--text)}
+  tr:last-child td{border-bottom:none}
+  .callout{background:rgba(79,124,255,.07);border-left:3px solid var(--key);border-radius:0 7px 7px 0;padding:9px 12px;font-size:.79rem;color:var(--text2);margin-top:10px}
+  .callout b{color:var(--key)}
+  .warn{background:rgba(245,158,11,.07);border-left:3px solid var(--amber);border-radius:0 7px 7px 0;padding:10px 13px;font-size:.8rem;color:var(--text2);margin-top:10px}
+  .warn b{color:var(--amber)}
+  .ex{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;margin-top:8px}
+  .ex .eh{font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:8px}
+  .stat{display:inline-block;font-size:.74rem;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:4px 10px;margin:3px 4px 0 0}
+  .stat b{font-family:var(--mono);color:var(--text)}
+  .stat.k b{color:var(--key)}
+  /* distribution */
+  .dist{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:8px}
+  .drow{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:.76rem}
+  .dlab{min-width:150px;color:var(--text2)}
+  .dbar{height:18px;border-radius:4px;display:flex;align-items:center;padding-left:8px;color:#0d0f14;font-weight:600;font-size:.7rem;min-width:26px}
+  .d-zero{background:var(--text3)} .d-low{background:rgba(79,124,255,.45)} .d-mid{background:rgba(79,124,255,.7)} .d-high{background:var(--accent)} .d-top{background:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tag">readiness score · component 1 of 3</div>
+  <h1><b>Engagement</b> Score</h1>
+  <p class="sub">How recently and genuinely active is this person?</p>
+
+  <div class="formula">channel = <b>weight</b> × <b>recency</b>(freshest) × <b>volume</b>(count÷cap) &nbsp;·&nbsp; sum across all channels</div>
+  <div class="note">▲ multiplied — needs BOTH recent AND repeated, or it's ~0</div>
+
+  <div class="sec"><span class="n">1</span> Keep only genuine actions</div>
+  <p>Every event with status <code style="font-family:var(--mono);font-size:.78rem">Sent</code> (automated) is dropped. Only Attended / Responded / Clicked-type events count toward the score.</p>
+
+  <div class="sec"><span class="n">2</span> Old activity decays (30-day half-life)</div>
+  <div class="cols">
+    <div class="card decay">
+      <svg viewBox="0 0 200 74" fill="none" preserveAspectRatio="none">
+        <polyline points="0,6 50,40 100,57 150,66 200,70" stroke="#4f7cff" stroke-width="2"/>
+        <line x1="0" y1="40" x2="50" y2="40" stroke="#2e3447" stroke-width="1" stroke-dasharray="3 3"/>
+        <circle cx="0" cy="6" r="2.5" fill="#4f7cff"/><circle cx="50" cy="40" r="2.5" fill="#4f7cff"/><circle cx="100" cy="57" r="2.5" fill="#4f7cff"/>
+      </svg>
+      <div class="dl"><span>now 100%</span><span>30d 50%</span><span>90d 12%</span></div>
+    </div>
+    <div class="card">
+      <p style="margin:0;font-size:.8rem"><b style="color:var(--text)">recency</b> = the decay of your <i>freshest</i> event in that channel. One recent event sets recency high; older events don't raise it.</p>
+    </div>
+  </div>
+  <div class="fbox">
+    <span class="c"># age_days = today − response_date</span><br/>
+    decay      = exp( −ln(2)/30 × age_days )  = 0.5 <sup>(age_days / 30)</sup><br/>
+    <b>recency</b>    = max( decay )  over the channel's genuine events<br/>
+    recency_score = recency × 100
+  </div>
+
+  <div class="sec"><span class="n">3</span> Weight by channel + cap volume</div>
+  <table>
+    <tr><th>Channel</th><th>weight</th><th>cap</th></tr>
+    <tr><td>Event (showed up)</td><td class="m">0.30</td><td class="m">3</td></tr>
+    <tr><td>Webinar</td><td class="m">0.25</td><td class="m">5</td></tr>
+    <tr><td>Content Syndication</td><td class="m">0.20</td><td class="m">5</td></tr>
+    <tr><td>Telemarketing</td><td class="m">0.10</td><td class="m">5</td></tr>
+    <tr><td>Email</td><td class="m">0.10</td><td class="m">10</td></tr>
+    <tr><td>Advertisement (passive)</td><td class="m">0.05</td><td class="m">10</td></tr>
+  </table>
+  <p style="margin-top:6px;font-size:.78rem;color:var(--text3)">Showing up in person &gt;&gt; an ad impression. <code style="font-family:var(--mono);font-size:.76rem">volume = (count ÷ cap).clip(0,1) × 100</code> — saturates at 100, so events past the cap add nothing.</p>
+
+  <div class="sec"><span class="n">4</span> Sum channels, then normalize</div>
+  <p>Per-channel scores sum into <code style="font-family:var(--mono);font-size:.78rem">raw_engagement_signal</code>, then divide by the <b>95th-percentile ceiling within entity type</b> → 0-100. Top 5% saturate at 100; one outlier can't squash everyone.</p>
+  <div><span class="stat k">ceiling Lead <b>1,452</b></span><span class="stat k">ceiling Contact <b>1,622</b></span></div>
+
+  <div class="callout"><b>Separate detector:</b> <code style="font-family:var(--mono);font-size:.78rem">automation_share</code> = automated ÷ all events. Above 70% → flagged inflated. It's an overlay (used later to cap the tier), NOT a silent score cut.</div>
+
+  <div class="sec">Worked example — L00014</div>
+  <div class="ex">
+    <div class="eh">VP / Technical Buyer · 5 channels touched</div>
+    <table>
+      <tr><th>Channel</th><th>#</th><th>recency</th><th>vol</th><th>contrib</th></tr>
+      <tr><td>Event</td><td class="m">3</td><td class="m">63.0</td><td class="m">100</td><td class="m">1,890</td></tr>
+      <tr><td>Content Syn.</td><td class="m">4</td><td class="m">72.4</td><td class="m">80</td><td class="m">1,158</td></tr>
+      <tr><td>Webinar</td><td class="m">3</td><td class="m">63.0</td><td class="m">60</td><td class="m">945</td></tr>
+      <tr><td>Email (old)</td><td class="m">1</td><td class="m">~0</td><td class="m">10</td><td class="m">0</td></tr>
+      <tr><td>Ad (old)</td><td class="m">1</td><td class="m">~0</td><td class="m">10</td><td class="m">0</td></tr>
+      <tr><td colspan="4" style="text-align:right;color:var(--text)">raw ≈</td><td class="m" style="color:var(--key)">3,990</td></tr>
+    </table>
+    <p style="margin-top:8px;margin-bottom:0;font-size:.79rem">3,990 ÷ 1,452 = 2.7 → clipped → <b style="color:var(--key)">engagement_score = 100</b>. The two stale single-touch channels contribute nothing — decay killed them.</p>
+  </div>
+
+  <div class="warn">
+    <b>Note — volume doesn't decay (a known seam).</b> Recency uses only the <i>freshest</i> event, but <b>volume is a raw lifetime count</b> — so an event from a year ago still adds to volume as long as there's one recent event to give recency. The multiplication protects the worst case (no recent activity → recency ≈ 0 → score ≈ 0), but old history can quietly re-credit itself, which slightly undercuts the "recency over depth" principle.
+    <br/><br/>
+    <i>Fix I'd make:</i> recency-weight the volume (sum of decays) or use the <code style="font-family:var(--mono);font-size:.76rem">meaningful_30d / 90d</code> windows already computed in <code style="font-family:var(--mono);font-size:.76rem">02_features.py</code> — so old events stop earning full volume credit.
+  </div>
+
+  <div class="sec">Distribution of actual engagement scores</div>
+  <p style="font-size:.8rem">Heavily zero-inflated — most records have no genuine engagement; a select 5% saturate at 100.</p>
+  <div class="dist">
+    <div class="drow"><span class="dlab">0 — no genuine eng.</span><div class="dbar d-zero" style="width:100%">575</div></div>
+    <div class="drow"><span class="dlab">1–39 — low</span><div class="dbar d-low" style="width:37.2%">214</div></div>
+    <div class="drow"><span class="dlab">40–69 — mid</span><div class="dbar d-mid" style="width:21.9%">126</div></div>
+    <div class="drow"><span class="dlab">70–99 — warming</span><div class="dbar d-high" style="width:5.7%">33</div></div>
+    <div class="drow"><span class="dlab">100 — saturated (top 5%)</span><div class="dbar d-top" style="width:9%">52</div></div>
+  </div>
+  <div style="margin-top:8px"><span class="stat"><b>mean 19.1</b></span><span class="stat"><b>median 0.1</b></span><span class="stat"><b>57.5%</b> at zero</span><span class="stat k"><b>5.2%</b> at 100</span></div>
+  <p style="margin-top:8px;font-size:.78rem;color:var(--text3)"><b>Missing handling:</b> people with no campaign history → engagement = 0 (not dropped, not imputed — zero is the meaningful answer, and it's why the spike at 0 is so large).</p>
+</div>
+</body>
+</html>

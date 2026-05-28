@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Final Score — Tying It Together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0d0f14;--bg2:#13161e;--bg3:#1b1f2a;--border:#252a38;--border2:#2e3447;
+    --text:#e8eaf0;--text2:#9aa0b4;--text3:#5c6278;--accent:#4f7cff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+    --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--display:'Fraunces',Georgia,serif}
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:36px 20px 80px}
+  .wrap{max-width:840px;margin:0 auto}
+  .tag{text-align:center;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+  h1{font-family:var(--display);font-weight:300;font-size:1.95rem;letter-spacing:-.02em;text-align:center;margin-top:4px}
+  h1 b{font-weight:700;color:var(--accent)}
+  .sub{text-align:center;color:var(--text2);font-size:.88rem;margin:6px 0 22px}
+
+  /* 3 inputs */
+  .inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:6px}
+  @media(max-width:640px){.inputs{grid-template-columns:1fr}}
+  .inp{background:var(--bg2);border:1px solid var(--border);border-top:3px solid;border-radius:10px;padding:12px 14px}
+  .inp.eng{border-top-color:var(--accent)} .inp.acc{border-top-color:var(--green)} .inp.prof{border-top-color:var(--purple)}
+  .inp .it{font-weight:700;font-size:.92rem;margin-bottom:3px}
+  .inp.eng .it{color:var(--accent)} .inp.acc .it{color:var(--green)} .inp.prof .it{color:var(--purple)}
+  .inp .id{font-size:.74rem;color:var(--text3)}
+  .inp .iv{font-family:var(--mono);font-size:1.5rem;font-weight:700;margin-top:7px}
+
+  .arrow{display:flex;justify-content:center;color:var(--border2);height:24px;align-items:center}
+  .arrow svg{width:20px;height:20px}
+
+  .sec{font-family:var(--display);font-weight:700;font-size:1.05rem;margin:20px 0 9px;display:flex;align-items:center;gap:9px}
+  .sec .n{font-family:var(--mono);font-size:.72rem;color:#0d0f14;background:var(--accent);border-radius:6px;padding:2px 9px}
+  p{font-size:.85rem;color:var(--text2);margin-bottom:8px}
+
+  .norm{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  @media(max-width:640px){.norm{grid-template-columns:1fr}}
+  .nc{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;font-size:.76rem;color:var(--text2)}
+  .nc b{display:block;font-family:var(--mono);font-size:.74rem;margin-bottom:3px}
+  .nc.eng b{color:var(--accent)} .nc.acc b{color:var(--green)} .nc.prof b{color:var(--purple)}
+
+  .wrow{margin-bottom:10px}
+  .wrow .wl{font-size:.78rem;color:var(--text2);margin-bottom:4px}
+  .wbar{display:flex;height:28px;border-radius:6px;overflow:hidden}
+  .seg{display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;color:#0d0f14}
+  .w-eng{background:var(--accent)} .w-acc{background:var(--green)} .w-prof{background:var(--purple)}
+
+  .ex{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:8px}
+  .ex .eh{font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:8px}
+  .calc{font-family:var(--mono);font-size:.84rem;color:var(--text2);line-height:1.9}
+  .calc b{color:var(--text)}
+  .result{font-family:var(--mono);font-size:1.05rem;font-weight:700;color:var(--green);margin-top:6px}
+
+  .tiers{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .pill{font-size:.74rem;font-weight:600;padding:4px 13px;border-radius:100px}
+  .p-call{background:rgba(34,197,94,.16);color:var(--green)}
+  .p-follow{background:rgba(245,158,11,.16);color:var(--amber)}
+  .p-nurture{background:rgba(156,163,175,.13);color:var(--text2)}
+  .p-flag{background:rgba(239,68,68,.16);color:var(--red)}
+
+  .callout{background:rgba(79,124,255,.07);border-left:3px solid var(--accent);border-radius:0 7px 7px 0;padding:10px 13px;font-size:.8rem;color:var(--text2);margin-top:12px}
+  .callout b{color:var(--accent)}
+  .stat{display:inline-block;font-size:.74rem;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:4px 10px;margin:3px 4px 0 0}
+  .stat b{font-family:var(--mono);color:var(--text)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tag">readiness score · putting it together</div>
+  <h1>The <b>Final Score</b></h1>
+  <p class="sub">Three components → normalized → weighted blend → one 0-100 number → a tier</p>
+
+  <!-- 3 inputs -->
+  <div class="inputs">
+    <div class="inp eng"><div class="it">Engagement</div><div class="id">recent &amp; genuine activity</div><div class="iv" style="color:var(--accent)">100</div></div>
+    <div class="inp acc"><div class="it">Account Fit</div><div class="id">company quality × data trust</div><div class="iv" style="color:var(--green)">81.4</div></div>
+    <div class="inp prof"><div class="it">Profile Fit</div><div class="id">seniority + persona</div><div class="iv" style="color:var(--purple)">85.0</div></div>
+  </div>
+  <p style="text-align:center;font-size:.74rem;color:var(--text3)">(values shown are for L00014 — the VP/Technical Buyer example)</p>
+
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- normalize -->
+  <div class="sec"><span class="n">1</span> Normalize each to 0-100 (note the asymmetry)</div>
+  <div class="norm">
+    <div class="nc eng"><b>Engagement</b>raw ÷ 95th-pct ceiling, within entity type. Only this one is percentile-normalized — it's an unbounded sum.</div>
+    <div class="nc acc"><b>Account fit</b>already 0-100 by construction (raw × multiplier ≤ 100). Just clipped.</div>
+    <div class="nc prof"><b>Profile fit</b>0-1 signal × 100. Already calibrated.</div>
+  </div>
+
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- blend -->
+  <div class="sec"><span class="n">2</span> Weighted blend — differentiated by entity type</div>
+  <div class="wrow">
+    <div class="wl">Lead — leans on engagement (newer, thin firmographics)</div>
+    <div class="wbar"><div class="seg w-eng" style="width:75%">75 eng</div><div class="seg w-acc" style="width:15%">15</div><div class="seg w-prof" style="width:10%">10</div></div>
+  </div>
+  <div class="wrow">
+    <div class="wl">Contact — more account weight (richer data)</div>
+    <div class="wbar"><div class="seg w-eng" style="width:60%">60 eng</div><div class="seg w-acc" style="width:25%">25 acct</div><div class="seg w-prof" style="width:15%">15</div></div>
+  </div>
+
+  <div class="ex">
+    <div class="eh">L00014 — full computation (it's a Lead)</div>
+    <div class="calc">
+      <b>100</b> × 0.75 &nbsp;=&nbsp; 75.0 &nbsp;<span style="color:var(--text3)">(engagement)</span><br/>
+      <b>81.4</b> × 0.15 &nbsp;=&nbsp; 12.2 &nbsp;<span style="color:var(--text3)">(account fit)</span><br/>
+      <b>85.0</b> × 0.10 &nbsp;=&nbsp; 8.5 &nbsp;<span style="color:var(--text3)">(profile fit)</span>
+    </div>
+    <div class="result">final_score = 95.7</div>
+  </div>
+
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+
+  <!-- tiers -->
+  <div class="sec"><span class="n">3</span> Score → tier</div>
+  <div class="tiers">
+    <span class="pill p-call">Call Now · lead ≥65 / contact ≥70</span>
+    <span class="pill p-follow">Follow Up · ≥35 / ≥40</span>
+    <span class="pill p-nurture">Nurture · below</span>
+    <span class="pill p-flag">Flagged · hard blocker</span>
+  </div>
+  <p style="margin-top:8px">L00014 at 95.7 (a Lead, threshold 65) → <b style="color:var(--green)">Call Now</b>.</p>
+
+  <div class="callout"><b>Confidence is a separate axis.</b> A second label (High / Medium / Low) comes from the DQ-flag count — independent of the readiness score. L00014 is white-hot to call but only <b>Medium</b> confidence (it carries a couple of data-quality flags). Readiness ≠ data quality.</div>
+
+  <div class="sec">What the final score looks like across the data</div>
+  <div><span class="stat"><b>median 12.9</b></span><span class="stat"><b>95th 72.2</b></span><span class="stat"><b>max 96.5</b></span><span class="stat"><b>37</b> Call Now</span></div>
+  <p style="margin-top:8px;font-size:.78rem;color:var(--text3)">Most records sit low; a select few score high — the "top 500 to call" shape, not a list where everyone looks hot.</p>
+
+  <div class="callout" style="border-left-color:var(--text3);background:var(--bg2)">
+    <b style="color:var(--text2)">The three component pages:</b> <span style="color:var(--accent)">engagement_score_explained.html</span> · <span style="color:var(--green)">account_fit_score_explained.html</span> · <span style="color:var(--purple)">profile_fit_score_explained.html</span>
+  </div>
+</div>
+</body>
+</html>

@@ -407,11 +407,12 @@ def generate_people(accounts: pd.DataFrame, n_leads: int = 600, n_contacts: int 
     for i, (li, ci) in enumerate(zip(converted_lead_idx, converted_contact_idx)):
         leads.iloc[li, leads.columns.get_loc("is_converted")] = True
         # A converted Contact is created FROM the Lead — they are the SAME person.
-        # Sync identity (name + email) so a connected pair represents one human, not two.
+        # Sync the full person identity so a connected pair is one human, not two.
+        # Account is intentionally NOT synced: a lead often has no account and gets one
+        # on conversion, so divergence there is realistic.
         # NOTE: copies existing values only — no RNG draws — so the data stream is unchanged.
-        contacts.iloc[ci, contacts.columns.get_loc("first_name")] = leads.iloc[li]["first_name"]
-        contacts.iloc[ci, contacts.columns.get_loc("last_name")]  = leads.iloc[li]["last_name"]
-        contacts.iloc[ci, contacts.columns.get_loc("email")]      = leads.iloc[li]["email"]
+        for _f in ("first_name", "last_name", "email", "title", "job_level", "job_persona", "phone"):
+            contacts.iloc[ci, contacts.columns.get_loc(_f)] = leads.iloc[li][_f]
         if not broken_mask[i]:
             leads.iloc[li, leads.columns.get_loc("converted_contact_id")] = contact_ids[ci]
             contacts.iloc[ci, contacts.columns.get_loc("primary_lead_id")] = lead_ids[li]

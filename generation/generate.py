@@ -413,6 +413,13 @@ def generate_people(accounts: pd.DataFrame, n_leads: int = 600, n_contacts: int 
         # NOTE: copies existing values only — no RNG draws — so the data stream is unchanged.
         for _f in ("first_name", "last_name", "email", "title", "job_level", "job_persona", "phone"):
             contacts.iloc[ci, contacts.columns.get_loc(_f)] = leads.iloc[li][_f]
+        # Same person -> same company. In SFDC, conversion resolves the lead's Company to an
+        # Account and attaches the contact to it, so the contact lands on the lead's account.
+        # Only sync when the lead actually has an account; if it doesn't, the contact keeps
+        # its own (conversion assigns one) so "contacts always have an account" still holds.
+        if pd.notna(leads.iloc[li]["account_id"]):
+            for _af in ("account_id", "industry", "employee_count"):
+                contacts.iloc[ci, contacts.columns.get_loc(_af)] = leads.iloc[li][_af]
         if not broken_mask[i]:
             leads.iloc[li, leads.columns.get_loc("converted_contact_id")] = contact_ids[ci]
             contacts.iloc[ci, contacts.columns.get_loc("primary_lead_id")] = lead_ids[li]

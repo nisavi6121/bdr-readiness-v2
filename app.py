@@ -339,6 +339,10 @@ def queue():
     f_min_score = float(request.args.get("min_score", 0) or 0)
     f_named_only = bool(request.args.get("named_only"))
     f_action = request.args.get("action", "")
+    f_name = request.args.get("name", "").strip()
+    f_page_size = int(request.args.get("page_size", PAGE_SIZE) or PAGE_SIZE)
+    if f_page_size not in (20, 50, 100):
+        f_page_size = PAGE_SIZE
     sort_by = request.args.get("sort_by", "tier")
     sort_dir = request.args.get("sort_dir", "asc")
     page = max(1, int(request.args.get("page", 1) or 1))
@@ -356,6 +360,9 @@ def queue():
         df = df[df["final_score"] >= f_min_score]
     if f_action:
         df = df[df["action_tag"] == f_action]
+    if f_name:
+        full = (df["first_name"].fillna("") + " " + df["last_name"].fillna("")).str.lower()
+        df = df[full.str.contains(f_name.lower(), na=False, regex=False)]
 
     # Sort
     col, _ = SORT_COLS.get(sort_by, ("tier_sort", True))
@@ -365,10 +372,10 @@ def queue():
         df = df.sort_values([col, "final_score"], ascending=[ascending, False], na_position="last")
 
     total = len(df)
-    total_pages = max(1, math.ceil(total / PAGE_SIZE))
+    total_pages = max(1, math.ceil(total / f_page_size))
     page = min(page, total_pages)
-    start = (page - 1) * PAGE_SIZE
-    page_df = df.iloc[start: start + PAGE_SIZE]
+    start = (page - 1) * f_page_size
+    page_df = df.iloc[start: start + f_page_size]
 
     def _rec(row):
         days = _v(row.get("days_since_last_engagement"))
@@ -397,7 +404,8 @@ def queue():
         "tier": f_tier, "entity_type": f_entity, "industry": f_industry,
         "min_score": f_min_score if f_min_score else "",
         "named_only": "1" if f_named_only else "",
-        "action": f_action,
+        "action": f_action, "name": f_name,
+        "page_size": f_page_size if f_page_size != PAGE_SIZE else "",
         "sort_by": sort_by, "sort_dir": sort_dir,
     }.items() if v}
 
@@ -422,6 +430,7 @@ def queue():
         sort_by=sort_by, sort_dir=sort_dir, surl=_surl,
         f_tier=f_tier, f_entity=f_entity, f_industry=f_industry,
         f_min_score=int(f_min_score), f_named_only=f_named_only, f_action=f_action,
+        f_name=f_name, f_page_size=f_page_size,
     )
 
 

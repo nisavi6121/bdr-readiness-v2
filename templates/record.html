@@ -101,6 +101,47 @@
     <div class="card">
       <div class="card-title">Score Composition</div>
       {{ sunburst_html|safe }}
+
+      {% if engagement_breakdown %}
+      {% set eb = engagement_breakdown %}
+      <div style="margin-top:16px;border-top:1px solid var(--bg3);padding-top:14px">
+        <div class="card-title" style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+          <span>Engagement Scoring</span>
+          <span class="mono" style="font-size:.76rem;color:var(--text3)">
+            {{ "%.1f"|format(eb.score) }}/100 × {{ "%.2f"|format(eb.weight) }} → {{ "%.1f"|format(eb.contribution) }} pts
+          </span>
+        </div>
+
+        {% if eb.by_type %}
+        <div class="bdown">
+          {% for t in eb.by_type %}
+          <div class="bd-row">
+            <span class="bd-lbl">{{ t.label }}</span>
+            <div class="bd-bg"><div class="bd-fill" style="width:{{ t.pct }}%;background:var(--accent)"></div></div>
+            <span class="bd-num mono">{{ "%.0f"|format(t.pct) }}%</span>
+          </div>
+          {% endfor %}
+        </div>
+        <div style="font-size:.72rem;color:var(--text3);margin-top:8px">
+          Share of genuine engagement signal by campaign type — recency-decayed (30-day half-life), automated sends excluded.
+        </div>
+        {% else %}
+        <div style="color:var(--text3);padding:8px 0;font-size:.84rem">No genuine engagement signal — engagement score is 0.</div>
+        {% endif %}
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+          <div class="metric" style="min-width:0;padding:10px 12px"><div class="metric-lbl">Genuine 30d</div><div class="metric-val" style="font-size:1.15rem">{{ eb.meaningful_30d }}</div></div>
+          <div class="metric" style="min-width:0;padding:10px 12px"><div class="metric-lbl">Genuine 90d</div><div class="metric-val" style="font-size:1.15rem">{{ eb.meaningful_90d }}</div></div>
+          <div class="metric" style="min-width:0;padding:10px 12px"><div class="metric-lbl">Genuine total</div><div class="metric-val" style="font-size:1.15rem">{{ eb.meaningful_total }}</div></div>
+          <div class="metric" style="min-width:0;padding:10px 12px"><div class="metric-lbl">Days since last</div><div class="metric-val" style="font-size:1.15rem">{{ eb.days_since_last if eb.days_since_last is not none else '—' }}</div></div>
+          <div class="metric" style="min-width:0;padding:10px 12px"><div class="metric-lbl">Automation</div><div class="metric-val {% if eb.automation_inflated %}amber{% endif %}" style="font-size:1.15rem">{{ "%.0f"|format(eb.automation_share*100) }}%</div></div>
+          <div class="metric" style="min-width:0;padding:10px 12px"><div class="metric-lbl">Total events</div><div class="metric-val" style="font-size:1.15rem">{{ eb.engagement_count }}</div></div>
+        </div>
+        {% if eb.automation_inflated %}
+        <div class="dq-warn">Automation-inflated: &gt;70% of events are automated sends — engagement signal discounted.</div>
+        {% endif %}
+      </div>
+      {% endif %}
     </div>
 
     <div class="card">

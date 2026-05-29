@@ -102,6 +102,41 @@ def _markdown_to_html(md: str) -> str:
     return "\n".join(html)
 
 
+def _engagement_breakdown(row: dict) -> dict:
+    """Decompose the engagement score for display below the sunburst:
+    per-campaign-type signal share plus the recency/volume/automation drivers."""
+    type_keys = ["event", "webinar", "content_syndication", "telemarketing", "email", "advertisement"]
+    type_lbls = ["Event", "Webinar", "Content Syndication", "Telemarketing", "Email", "Advertisement"]
+    raw = [(type_lbls[i], max(float(row.get(f"eng_{k}") or 0), 0.0)) for i, k in enumerate(type_keys)]
+    total = sum(v for _, v in raw)
+    by_type = sorted(
+        (
+            {"label": lbl, "value": val, "pct": (val / total * 100 if total > 1e-9 else 0.0)}
+            for lbl, val in raw if val > 1e-6
+        ),
+        key=lambda d: d["value"],
+        reverse=True,
+    )
+
+    dsl = row.get("days_since_last_engagement")
+    has_events = int(row.get("engagement_count") or 0) > 0
+    return {
+        "score": float(row.get("engagement_score") or 0),
+        "weight": float(row.get("engagement_weight") or 0.60),
+        "contribution": float(row.get("engagement_score") or 0) * float(row.get("engagement_weight") or 0.60),
+        "raw_signal": float(row.get("raw_engagement_signal") or 0),
+        "by_type": by_type,
+        "meaningful_30d": int(row.get("meaningful_30d") or 0),
+        "meaningful_90d": int(row.get("meaningful_90d") or 0),
+        "meaningful_total": int(row.get("meaningful_count") or 0),
+        "engagement_count": int(row.get("engagement_count") or 0),
+        "sent_events": int(row.get("sent_events") or 0),
+        "days_since_last": (int(dsl) if (dsl is not None and has_events) else None),
+        "automation_share": float(row.get("automation_share") or 0),
+        "automation_inflated": bool(row.get("automation_inflated_flag")),
+    }
+
+
 def _sunburst_html(row: dict) -> str:
     import math
 
@@ -463,7 +498,8 @@ def record_detail(record_id: str):
     # Preserve filter context for back link
     back_url = request.referrer or url_for("queue")
 
-    return render_template("record.html", r=r, engagement=engagement, sunburst_html=sunburst, back_url=back_url)
+    return render_template("record.html", r=r, engagement=engagement, sunburst_html=sunburst,
+                           engagement_breakdown=_engagement_breakdown(r), back_url=back_url)
 
 
 @app.route("/methodology")

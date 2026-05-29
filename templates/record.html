@@ -113,13 +113,17 @@
         </div>
 
         {% if eb.by_type %}
-        <div class="bdown">
+        <div style="display:flex;height:18px;border-radius:5px;overflow:hidden;background:var(--bg3);margin-top:6px">
           {% for t in eb.by_type %}
-          <div class="bd-row">
-            <span class="bd-lbl">{{ t.label }}</span>
-            <div class="bd-bg"><div class="bd-fill" style="width:{{ t.pct }}%;background:var(--accent)"></div></div>
-            <span class="bd-num mono">{{ "%.0f"|format(t.pct) }}%</span>
-          </div>
+          <div style="width:{{ t.pct }}%;background:{{ t.color }}" title="{{ t.label }} — {{ '%.0f'|format(t.pct) }}%"></div>
+          {% endfor %}
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:10px">
+          {% for t in eb.by_type %}
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text2)">
+            <span style="width:10px;height:10px;border-radius:3px;background:{{ t.color }};display:inline-block;flex-shrink:0"></span>
+            {{ t.label }} <span class="mono" style="color:var(--text3)">{{ "%.0f"|format(t.pct) }}%</span>
+          </span>
           {% endfor %}
         </div>
         <div style="font-size:.72rem;color:var(--text3);margin-top:8px">

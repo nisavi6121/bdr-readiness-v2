@@ -102,17 +102,33 @@ def _markdown_to_html(md: str) -> str:
     return "\n".join(html)
 
 
+ENGAGEMENT_TYPE_COLORS = {
+    "Event": "#4f7cff",
+    "Webinar": "#38bdf8",
+    "Content Syndication": "#6366f1",
+    "Telemarketing": "#14b8a6",
+    "Email": "#0ea5e9",
+    "Advertisement": "#ec4899",
+}
+
+
 def _engagement_breakdown(row: dict) -> dict:
     """Decompose the engagement score for display below the sunburst:
-    per-campaign-type signal share plus the recency/volume/automation drivers."""
+    per-campaign-type signal share (as one stacked bar) plus the recency/volume/automation drivers."""
     type_keys = ["event", "webinar", "content_syndication", "telemarketing", "email", "advertisement"]
     type_lbls = ["Event", "Webinar", "Content Syndication", "Telemarketing", "Email", "Advertisement"]
     raw = [(type_lbls[i], max(float(row.get(f"eng_{k}") or 0), 0.0)) for i, k in enumerate(type_keys)]
     total = sum(v for _, v in raw)
     by_type = sorted(
         (
-            {"label": lbl, "value": val, "pct": (val / total * 100 if total > 1e-9 else 0.0)}
-            for lbl, val in raw if val > 1e-6
+            {
+                "label": lbl,
+                "value": val,
+                "pct": val / total * 100,
+                "color": ENGAGEMENT_TYPE_COLORS.get(lbl, "#4f7cff"),
+            }
+            for lbl, val in raw
+            if total > 1e-9 and (val / total * 100) >= 0.5
         ),
         key=lambda d: d["value"],
         reverse=True,

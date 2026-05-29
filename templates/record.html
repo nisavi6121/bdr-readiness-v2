@@ -166,7 +166,10 @@
                   <tr style="cursor:default">
                     <td><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:{{ t.color }};margin-right:6px"></span>{{ t.label }}</td>
                     <td class="mono">{{ "%.2f"|format(t.weight) }}</td>
-                    <td class="mono">{{ "%.0f"|format(t.recency) }}</td>
+                    <td class="mono">
+                      {{ "%.0f"|format(t.recency) }}
+                      {% if t.age_days is not none %}<div style="font-size:.68rem;color:var(--text3)">2^(−{{ "%.0f"|format(t.age_days) }}d/{{ ec.half_life }}) × 100</div>{% endif %}
+                    </td>
                     <td class="mono">{{ t.volume }}/{{ t.cap }} → {{ "%.0f"|format(t.volume_score) }}</td>
                     <td class="mono" style="text-align:right">{{ "%.1f"|format(t.contribution) }}</td>
                   </tr>

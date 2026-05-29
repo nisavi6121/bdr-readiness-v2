@@ -190,8 +190,11 @@ def _engagement_calc(row: dict) -> dict | None:
         w = ENG_TYPE_WEIGHTS[lbl]
         vol_score = min(v / cap, 1.0) * 100 if cap else 0.0
         recency = (contrib / (w * vol_score)) if (w > 0 and vol_score > 0) else 0.0
+        # recency = 2^(-age/half_life) x 100  ->  recover the age of the most recent event of this type
+        rec_clamped = min(max(recency, 0.0), 100.0)
+        age_days = (-ENG_HALF_LIFE * math.log2(rec_clamped / 100)) if rec_clamped > 0 else None
         rows.append({
-            "label": lbl, "weight": w, "recency": recency,
+            "label": lbl, "weight": w, "recency": recency, "age_days": age_days,
             "volume": v, "cap": cap, "volume_score": vol_score,
             "contribution": contrib, "color": ENGAGEMENT_TYPE_COLORS.get(lbl, "#4f7cff"),
         })

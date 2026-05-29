@@ -9,9 +9,23 @@ recent_cm = cm[cm["response_date"] >= today - pd.Timedelta(days=90)]
 recent_genuine = recent_cm[recent_cm["member_status"] != "Sent"]
 
 
-def show(num, label, subset, sort_col="final_score"):
+def show(num, label, subset, sort_col="final_score", full=None):
+    # `full` = matching records including hard-blocked ones. If the strongest overall
+    # match is blocked, surface it rather than silently reporting a weaker callable record.
+    blocked_note = ""
+    if full is not None and len(full) > 0:
+        top_full = full.sort_values(sort_col, ascending=False).iloc[0]
+        shown_id = subset.sort_values(sort_col, ascending=False).iloc[0]["record_id"] if len(subset) else None
+        if bool(top_full.get("hard_blocker")) and top_full["record_id"] != shown_id:
+            blocked_note = (
+                f"  [!] Strongest match {top_full['record_id']} (score {top_full['final_score']}) is "
+                f"BLOCKED ({top_full.get('hard_blocker_reasons', '')}) -> Flagged, excluded from call list"
+            )
     if len(subset) == 0:
-        print(f"P{num} {label}: NO MATCH\n")
+        print(f"P{num} {label}: NO CALLABLE MATCH")
+        if blocked_note:
+            print(blocked_note)
+        print()
         return
     r = subset.sort_values(sort_col, ascending=False).iloc[0]
     jl = str(r.get("job_level", "?"))
@@ -20,20 +34,22 @@ def show(num, label, subset, sort_col="final_score"):
     print(f"  {r['record_id']} | {r['entity_type']} | {jl} | {jp}")
     print(f"  Tier:{r['tier']}  Score:{r['final_score']}  eng:{r['engagement_score']:.1f}  acc:{r['account_fit_score']:.1f}  prof:{r['profile_fit_score']:.1f}")
     print(f"  Action: {str(r['bdr_action'])[:110]}")
+    if blocked_note:
+        print(blocked_note)
     print()
 
 
 rg_ids = set(recent_genuine["scoring_person_id"].unique())
 
-p1 = df[
+p1_full = df[
     df["job_level"].isin(["VP", "C-Level"])
     & df["named_account_flag"].fillna(False)
     & df["icp_flag"].fillna(False)
     & df["is_current_mql"].fillna(False)
-    & ~df["hard_blocker"].fillna(False)
     & df["scoring_person_id"].isin(rg_ids)
 ]
-show(1, "VP/CL named ICP recent MQL (expect: Call Now)", p1)
+p1 = p1_full[~p1_full["hard_blocker"].fillna(False)]
+show(1, "VP/CL named ICP recent MQL (expect: Call Now)", p1, full=p1_full)
 
 p2 = df[
     df["job_level"].isin(["VP", "C-Level"])

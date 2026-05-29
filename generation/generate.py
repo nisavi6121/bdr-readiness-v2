@@ -638,6 +638,12 @@ def _inject_persona_guarantees(
     icp_acc_ids = set(accounts[accounts["industry"].isin(ICP_INDUSTRIES)]["account_id"])
     named_icp_accs = named_acc_ids & icp_acc_ids
 
+    # A showcase persona must be callable: exclude do-not-contact accounts so the
+    # injected record is not hard-blocked (DQ overlay) and pushed into the Flagged tier.
+    dnc_acc_ids = set(accounts[accounts["account_do_not_contact"].fillna(False)]["account_id"])
+    callable_named_icp = named_icp_accs - dnc_acc_ids
+    callable_icp = icp_acc_ids - dnc_acc_ids
+
     cm_next_id = int(campaign_members["cm_id"].str.replace("CM", "").astype(int).max()) + 1
     extra = []
 
@@ -675,22 +681,30 @@ def _inject_persona_guarantees(
         leads["job_level"].isin(["VP", "C-Level"])
         & leads["job_persona"].isin(_PROSPECT_PERSONAS_G)
         & leads["is_current_mql"]
-        & leads["account_id"].isin(named_icp_accs)
+        & leads["account_id"].isin(callable_named_icp)
+        & ~leads["email_opt_out"].fillna(False)
+        & ~leads["email_bounced"].fillna(False)
+        & ~leads["no_longer_with_company"].fillna(False)
     ]["lead_id"].tolist()
     p1_contacts = contacts[
         contacts["job_level"].isin(["VP", "C-Level"])
         & contacts["job_persona"].isin(_PROSPECT_PERSONAS_G)
         & contacts["is_mql"]
-        & contacts["account_id"].isin(named_icp_accs)
+        & contacts["account_id"].isin(callable_named_icp)
+        & ~contacts["email_opt_out"].fillna(False)
+        & ~contacts["email_bounced"].fillna(False)
     ]["contact_id"].tolist()
     p1_candidates = p1_leads + p1_contacts
 
-    # If no natural candidates, promote the best available lead
+    # If no natural candidates, promote the best available callable lead
     if not p1_candidates:
         vp_icp = leads[
             leads["job_level"].isin(["VP", "C-Level"])
-            & leads["account_id"].isin(icp_acc_ids)
+            & leads["account_id"].isin(callable_icp)
             & ~leads["is_current_mql"]
+            & ~leads["email_opt_out"].fillna(False)
+            & ~leads["email_bounced"].fillna(False)
+            & ~leads["no_longer_with_company"].fillna(False)
         ]
         if len(vp_icp) > 0:
             idx = vp_icp.index[0]
@@ -713,6 +727,7 @@ def _inject_persona_guarantees(
             accounts["is_named_account"]
             & accounts["industry"].isin(ICP_INDUSTRIES)
             & (accounts["intent_score"] >= 70)
+            & ~accounts["account_do_not_contact"].fillna(False)
         ]["account_id"]
     )
     p10_df = contacts[
@@ -720,12 +735,18 @@ def _inject_persona_guarantees(
         & contacts["job_level"].isin(["VP", "C-Level", "Director"])
         & contacts["job_persona"].isin(["CISO", "Technical Buyer"])
         & contacts["account_id"].isin(high_intent_named_icp)
+        & ~contacts["email_opt_out"].fillna(False)
+        & ~contacts["email_bounced"].fillna(False)
     ]
     if len(p10_df) > 0:
         p10_pid = p10_df.iloc[0]["contact_id"]
     else:
-        # Patch the first orphan contact to qualify
-        orphans = contacts[contacts["primary_lead_id"].isna()]
+        # Patch the first callable orphan contact to qualify
+        orphans = contacts[
+            contacts["primary_lead_id"].isna()
+            & ~contacts["email_opt_out"].fillna(False)
+            & ~contacts["email_bounced"].fillna(False)
+        ]
         if len(orphans) > 0 and len(high_intent_named_icp) > 0:
             idx = orphans.index[0]
             hi_acc = next(iter(high_intent_named_icp))

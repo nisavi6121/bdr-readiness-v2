@@ -18,7 +18,7 @@ CM000016,L00279,Lead,CAM0050,Webinar Campaign 050,Webinar,No Show,True,2025-09-2
 CM000017,C00017,Contact,CAM0060,Event Campaign 060,Event,No Show,True,2026-04-19,False,False,C00017
 CM000018,C00151,Contact,CAM0059,Content Syndication Campaign 059,Content Syndication,Sent,False,2026-05-03,True,True,C00151
 CM000019,C00151,Contact,CAM0060,Event Campaign 060,Event,Sent,False,2026-04-27,True,True,C00151
-CM000020,C00151,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,C00151
+CM000020,C00151,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,C00151
 CM000021,C00151,Contact,CAM0056,Webinar Campaign 056,Webinar,No Show,True,2026-04-17,False,True,C00151
 CM000022,C00151,Contact,CAM0059,Content Syndication Campaign 059,Content Syndication,Sent,False,2026-04-18,True,True,C00151
 CM000023,C00151,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-19,True,True,C00151
@@ -237,7 +237,7 @@ CM000235,L00479,Lead,CAM0053,Email Campaign 053,Email,Sent,False,2025-05-28,True
 CM000236,L00479,Lead,CAM0027,Advertisement Campaign 027,Advertisement,Sent,False,2024-04-11,True,True,L00479
 CM000237,L00479,Lead,CAM0031,Email Campaign 031,Email,Sent,False,2024-03-03,True,True,L00479
 CM000238,L00479,Lead,CAM0046,Webinar Campaign 046,Webinar,Sent,False,2026-01-21,True,True,L00479
-CM000239,L00479,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-28,True,True,L00479
+CM000239,L00479,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-29,True,True,L00479
 CM000240,C00068,Contact,CAM0052,Advertisement Campaign 052,Advertisement,Sent,False,2025-05-14,False,True,C00068
 CM000241,C00068,Contact,CAM0008,Email Campaign 008,Email,Sent,False,2023-05-12,True,True,C00068
 CM000242,C00313,Contact,CAM0055,Advertisement Campaign 055,Advertisement,Sent,False,2025-10-14,True,True,C00313
@@ -270,7 +270,7 @@ CM000268,L00458,Lead,CAM0031,Email Campaign 031,Email,Sent,False,2024-03-09,True
 CM000269,L00458,Lead,CAM0054,Email Campaign 054,Email,Sent,False,2025-12-12,True,True,L00458
 CM000270,C00061,Contact,CAM0060,Event Campaign 060,Event,Registered,True,2026-04-26,False,True,C00061
 CM000271,C00061,Contact,CAM0037,Email Campaign 037,Email,Sent,False,2024-03-25,True,True,C00061
-CM000272,C00022,Contact,CAM0058,Webinar Campaign 058,Webinar,Attended,True,2026-05-28,False,False,C00022
+CM000272,C00022,Contact,CAM0058,Webinar Campaign 058,Webinar,Attended,True,2026-05-29,False,False,C00022
 CM000273,C00022,Contact,CAM0022,Event Campaign 022,Event,Attended,True,2024-05-22,False,True,C00022
 CM000274,C00022,Contact,CAM0030,Event Campaign 030,Event,Registered,True,2023-09-13,False,True,C00022
 CM000275,L00153,Lead,CAM0056,Webinar Campaign 056,Webinar,Attended,True,2026-05-01,False,True,L00153
@@ -355,7 +355,7 @@ CM000353,C00071,Contact,CAM0021,Advertisement Campaign 021,Advertisement,Sent,Fa
 CM000354,C00071,Contact,CAM0021,Advertisement Campaign 021,Advertisement,Sent,False,2023-09-02,True,True,C00071
 CM000355,C00071,Contact,CAM0019,Webinar Campaign 019,Webinar,Sent,False,2024-06-17,True,True,C00071
 CM000356,L00111,Lead,CAM0006,Telemarketing Campaign 006,Telemarketing,Sent,False,2023-04-25,True,True,L00111
-CM000357,L00111,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-28,True,True,L00111
+CM000357,L00111,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-29,True,True,L00111
 CM000358,L00111,Lead,CAM0002,Telemarketing Campaign 002,Telemarketing,Sent,False,2023-03-01,True,True,L00111
 CM000359,L00111,Lead,CAM0017,Content Syndication Campaign 017,Content Syndication,Sent,False,2023-11-09,True,True,L00111
 CM000360,L00111,Lead,CAM0002,Telemarketing Campaign 002,Telemarketing,Sent,False,2023-02-17,True,True,L00111
@@ -544,7 +544,7 @@ CM000542,C00169,Contact,CAM0003,Event Campaign 003,Event,Sent,False,2023-11-14,T
 CM000543,C00169,Contact,CAM0041,Email Campaign 041,Email,Sent,False,2025-04-25,True,True,C00169
 CM000544,C00169,Contact,CAM0001,Email Campaign 001,Email,Sent,False,2024-10-06,True,True,C00169
 CM000545,L00371,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-06,True,False,C00241
-CM000546,L00371,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,C00241
+CM000546,L00371,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,C00241
 CM000547,L00371,Lead,CAM0056,Webinar Campaign 056,Webinar,Sent,False,2026-04-19,True,True,C00241
 CM000548,L00371,Lead,CAM0029,Webinar Campaign 029,Webinar,Sent,False,2024-02-09,True,True,C00241
 CM000549,L00371,Lead,CAM0047,Advertisement Campaign 047,Advertisement,Sent,False,2025-06-20,False,True,C00241
@@ -647,7 +647,7 @@ CM000645,C00155,Contact,CAM0035,Event Campaign 035,Event,Attended,True,2025-01-1
 CM000646,C00089,Contact,CAM0059,Content Syndication Campaign 059,Content Syndication,Clicked,True,2026-05-02,False,True,C00089
 CM000647,C00089,Contact,CAM0035,Event Campaign 035,Event,Registered,True,2024-12-31,False,True,C00089
 CM000648,C00089,Contact,CAM0028,Telemarketing Campaign 028,Telemarketing,Clicked,True,2024-12-06,False,True,C00089
-CM000649,L00198,Lead,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-28,False,True,L00198
+CM000649,L00198,Lead,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-29,False,True,L00198
 CM000650,L00198,Lead,CAM0033,Advertisement Campaign 033,Advertisement,Sent,False,2023-03-16,False,True,L00198
 CM000651,L00470,Lead,CAM0060,Event Campaign 060,Event,Registered,True,2026-05-08,False,True,L00470
 CM000652,L00470,Lead,CAM0029,Webinar Campaign 029,Webinar,Registered,True,2024-01-20,False,True,L00470
@@ -782,7 +782,7 @@ CM000780,C00325,Contact,CAM0036,Advertisement Campaign 036,Advertisement,Sent,Fa
 CM000781,C00325,Contact,CAM0002,Telemarketing Campaign 002,Telemarketing,Sent,False,2023-02-18,True,True,C00325
 CM000782,L00500,Lead,CAM0053,Email Campaign 053,Email,Sent,False,2025-06-06,True,True,C00231
 CM000783,L00500,Lead,CAM0020,Event Campaign 020,Event,Sent,False,2024-01-01,True,True,C00231
-CM000784,L00500,Lead,CAM0057,Event Campaign 057,Event,No Show,True,2026-05-28,False,True,C00231
+CM000784,L00500,Lead,CAM0057,Event Campaign 057,Event,No Show,True,2026-05-29,False,True,C00231
 CM000785,L00500,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-18,True,True,C00231
 CM000786,L00500,Lead,CAM0031,Email Campaign 031,Email,Sent,False,2024-02-15,True,True,C00231
 CM000787,L00500,Lead,CAM0013,Content Syndication Campaign 013,Content Syndication,Clicked,True,2023-05-10,False,True,C00231
@@ -832,7 +832,7 @@ CM000830,C00011,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-
 CM000831,C00011,Contact,CAM0055,Advertisement Campaign 055,Advertisement,Sent,False,2025-10-01,True,True,C00011
 CM000832,C00011,Contact,CAM0015,Advertisement Campaign 015,Advertisement,Sent,False,2024-04-22,True,True,C00011
 CM000833,C00011,Contact,CAM0045,Email Campaign 045,Email,Sent,False,2025-05-03,True,True,C00011
-CM000834,C00025,Contact,CAM0058,Webinar Campaign 058,Webinar,No Show,True,2026-05-28,False,True,C00025
+CM000834,C00025,Contact,CAM0058,Webinar Campaign 058,Webinar,No Show,True,2026-05-29,False,True,C00025
 CM000835,C00191,Contact,CAM0006,Telemarketing Campaign 006,Telemarketing,Sent,False,2023-04-12,True,True,C00191
 CM000836,C00191,Contact,CAM0020,Event Campaign 020,Event,Sent,False,2023-12-20,True,True,C00191
 CM000837,C00191,Contact,CAM0019,Webinar Campaign 019,Webinar,Sent,False,2024-07-05,True,True,C00191
@@ -1082,7 +1082,7 @@ CM001080,L00494,Lead,CAM0058,Webinar Campaign 058,Webinar,Attended,True,2026-05-
 CM001081,L00494,Lead,CAM0038,Email Campaign 038,Email,Sent,False,2023-02-07,True,True,L00494
 CM001082,C00135,Contact,CAM0016,Content Syndication Campaign 016,Content Syndication,Sent,False,2023-08-30,False,True,C00135
 CM001083,C00135,Contact,CAM0009,Webinar Campaign 009,Webinar,Sent,False,2024-08-02,True,True,C00135
-CM001084,C00135,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,C00135
+CM001084,C00135,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,C00135
 CM001085,C00135,Contact,CAM0052,Advertisement Campaign 052,Advertisement,Sent,False,2025-05-06,True,True,C00135
 CM001086,C00135,Contact,CAM0054,Email Campaign 054,Email,Sent,False,2025-12-30,True,True,C00135
 CM001087,C00135,Contact,CAM0009,Webinar Campaign 009,Webinar,Sent,False,2024-07-28,True,True,C00135
@@ -1161,7 +1161,7 @@ CM001159,C00098,Contact,CAM0011,Webinar Campaign 011,Webinar,Attended,True,2024-
 CM001160,C00049,Contact,CAM0056,Webinar Campaign 056,Webinar,No Show,True,2026-04-15,False,True,C00049
 CM001161,C00049,Contact,CAM0034,Webinar Campaign 034,Webinar,Registered,True,2024-06-05,False,True,C00049
 CM001162,C00049,Contact,CAM0041,Email Campaign 041,Email,Clicked,True,2025-05-07,False,True,C00049
-CM001163,C00104,Contact,CAM0058,Webinar Campaign 058,Webinar,No Show,True,2026-05-28,False,True,C00104
+CM001163,C00104,Contact,CAM0058,Webinar Campaign 058,Webinar,No Show,True,2026-05-29,False,True,C00104
 CM001164,C00104,Contact,CAM0045,Email Campaign 045,Email,Clicked,True,2025-04-26,False,True,C00104
 CM001165,C00104,Contact,CAM0014,Content Syndication Campaign 014,Content Syndication,Responded,True,2024-11-10,False,True,C00104
 CM001166,L00220,Lead,CAM0006,Telemarketing Campaign 006,Telemarketing,Clicked,True,2023-04-10,False,True,L00220
@@ -1320,7 +1320,7 @@ CM001318,L00308,Lead,CAM0054,Email Campaign 054,Email,Sent,False,2025-12-24,True
 CM001319,L00308,Lead,CAM0056,Webinar Campaign 056,Webinar,Sent,False,2026-04-22,True,True,L00308
 CM001320,L00308,Lead,CAM0038,Email Campaign 038,Email,Sent,False,2023-01-30,True,True,L00308
 CM001321,L00308,Lead,CAM0006,Telemarketing Campaign 006,Telemarketing,Sent,False,2023-04-20,True,True,L00308
-CM001322,L00308,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,L00308
+CM001322,L00308,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,L00308
 CM001323,L00308,Lead,CAM0029,Webinar Campaign 029,Webinar,Sent,False,2024-02-13,True,True,L00308
 CM001324,L00308,Lead,CAM0023,Webinar Campaign 023,Webinar,Sent,False,2024-05-05,True,True,L00308
 CM001325,L00308,Lead,CAM0025,Event Campaign 025,Event,Attended,True,2023-03-16,False,True,L00308
@@ -1407,7 +1407,7 @@ CM001405,L00589,Lead,CAM0003,Event Campaign 003,Event,Attended,True,2023-10-22,F
 CM001406,C00271,Contact,CAM0005,Telemarketing Campaign 005,Telemarketing,Clicked,True,2024-08-29,False,True,C00271
 CM001407,L00422,Lead,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-18,False,True,C00069
 CM001408,C00292,Contact,CAM0060,Event Campaign 060,Event,Sent,False,2026-04-20,True,True,C00292
-CM001409,C00292,Contact,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-28,False,True,C00292
+CM001409,C00292,Contact,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-29,False,True,C00292
 CM001410,C00292,Contact,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-15,True,True,C00292
 CM001411,C00292,Contact,CAM0025,Event Campaign 025,Event,Sent,False,2023-02-24,True,True,C00292
 CM001412,C00292,Contact,CAM0052,Advertisement Campaign 052,Advertisement,Sent,False,2025-05-06,True,True,C00292
@@ -1462,7 +1462,7 @@ CM001460,C00286,Contact,CAM0054,Email Campaign 054,Email,Sent,False,2026-01-06,T
 CM001461,C00286,Contact,CAM0001,Email Campaign 001,Email,Sent,False,2024-10-23,True,True,C00286
 CM001462,C00286,Contact,CAM0027,Advertisement Campaign 027,Advertisement,Sent,False,2024-04-10,True,True,C00286
 CM001463,C00286,Contact,CAM0018,Content Syndication Campaign 018,Content Syndication,Sent,False,2024-06-23,True,True,C00286
-CM001464,C00286,Contact,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-28,True,True,C00286
+CM001464,C00286,Contact,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-29,True,True,C00286
 CM001465,C00286,Contact,CAM0038,Email Campaign 038,Email,Sent,False,2023-02-16,True,True,C00286
 CM001466,C00286,Contact,CAM0014,Content Syndication Campaign 014,Content Syndication,Clicked,True,2024-11-26,False,True,C00286
 CM001467,C00286,Contact,CAM0018,Content Syndication Campaign 018,Content Syndication,Sent,False,2024-06-19,True,True,C00286
@@ -1517,7 +1517,7 @@ CM001515,C00152,Contact,CAM0060,Event Campaign 060,Event,Registered,True,2026-04
 CM001516,C00369,Contact,CAM0057,Event Campaign 057,Event,No Show,True,2026-05-18,False,False,C00369
 CM001517,L00281,Lead,CAM0052,Advertisement Campaign 052,Advertisement,Sent,False,2025-04-28,False,True,C00145
 CM001518,L00281,Lead,CAM0049,Webinar Campaign 049,Webinar,Attended,True,2025-10-24,False,True,C00145
-CM001519,L00281,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,C00145
+CM001519,L00281,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,C00145
 CM001520,L00281,Lead,CAM0045,Email Campaign 045,Email,Sent,False,2025-04-18,True,True,C00145
 CM001521,L00281,Lead,CAM0013,Content Syndication Campaign 013,Content Syndication,Sent,False,2023-05-02,True,True,C00145
 CM001522,L00281,Lead,CAM0015,Advertisement Campaign 015,Advertisement,Sent,False,2024-04-22,True,True,C00145
@@ -1630,7 +1630,7 @@ CM001628,C00263,Contact,CAM0054,Email Campaign 054,Email,Sent,False,2026-01-09,T
 CM001629,C00263,Contact,CAM0034,Webinar Campaign 034,Webinar,Sent,False,2024-05-22,True,True,C00263
 CM001630,C00263,Contact,CAM0020,Event Campaign 020,Event,No Show,True,2023-12-09,False,True,C00263
 CM001631,C00263,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-05,True,True,C00263
-CM001632,C00263,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,False,C00263
+CM001632,C00263,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,False,C00263
 CM001633,C00263,Contact,CAM0053,Email Campaign 053,Email,Sent,False,2025-06-05,True,True,C00263
 CM001634,L00299,Lead,CAM0056,Webinar Campaign 056,Webinar,No Show,True,2026-04-20,False,True,L00299
 CM001635,L00588,Lead,CAM0028,Telemarketing Campaign 028,Telemarketing,Sent,False,2024-12-15,False,True,L00588
@@ -1704,7 +1704,7 @@ CM001702,C00044,Contact,CAM0011,Webinar Campaign 011,Webinar,Sent,False,2024-01-
 CM001703,C00044,Contact,CAM0025,Event Campaign 025,Event,Sent,False,2023-02-28,True,True,C00044
 CM001704,L00118,Lead,CAM0014,Content Syndication Campaign 014,Content Syndication,Sent,False,2024-11-26,False,True,L00118
 CM001705,L00118,Lead,CAM0037,Email Campaign 037,Email,Responded,True,2024-03-20,False,False,L00118
-CM001706,L00330,Lead,CAM0058,Webinar Campaign 058,Webinar,Attended,True,2026-05-28,False,True,L00330
+CM001706,L00330,Lead,CAM0058,Webinar Campaign 058,Webinar,Attended,True,2026-05-29,False,True,L00330
 CM001707,L00330,Lead,CAM0010,Content Syndication Campaign 010,Content Syndication,Sent,False,2024-05-03,False,True,L00330
 CM001708,L00008,Lead,CAM0060,Event Campaign 060,Event,No Show,True,2026-04-14,False,True,L00008
 CM001709,L00008,Lead,CAM0053,Email Campaign 053,Email,Responded,True,2025-05-29,False,True,L00008
@@ -1764,7 +1764,7 @@ CM001762,C00306,Contact,CAM0032,Webinar Campaign 032,Webinar,Attended,True,2023-
 CM001763,C00306,Contact,CAM0039,Advertisement Campaign 039,Advertisement,Sent,False,2025-01-06,False,True,C00306
 CM001764,C00306,Contact,CAM0005,Telemarketing Campaign 005,Telemarketing,Clicked,True,2024-08-23,False,True,C00306
 CM001765,C00306,Contact,CAM0047,Advertisement Campaign 047,Advertisement,Sent,False,2025-07-05,False,True,C00306
-CM001766,L00325,Lead,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-28,False,True,L00325
+CM001766,L00325,Lead,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-29,False,True,L00325
 CM001767,C00136,Contact,CAM0006,Telemarketing Campaign 006,Telemarketing,Responded,True,2023-04-05,False,True,C00136
 CM001768,L00401,Lead,CAM0056,Webinar Campaign 056,Webinar,No Show,True,2026-04-13,False,True,L00401
 CM001769,L00401,Lead,CAM0059,Content Syndication Campaign 059,Content Syndication,Sent,False,2026-04-23,False,True,L00401
@@ -1776,7 +1776,7 @@ CM001774,L00401,Lead,CAM0005,Telemarketing Campaign 005,Telemarketing,Sent,False
 CM001775,L00599,Lead,CAM0059,Content Syndication Campaign 059,Content Syndication,Clicked,True,2026-05-06,False,True,L00599
 CM001776,L00599,Lead,CAM0036,Advertisement Campaign 036,Advertisement,Clicked,True,2024-09-14,False,True,L00599
 CM001777,L00599,Lead,CAM0039,Advertisement Campaign 039,Advertisement,Clicked,True,2025-01-12,False,True,L00599
-CM001778,L00057,Lead,CAM0058,Webinar Campaign 058,Webinar,No Show,True,2026-05-28,False,True,L00057
+CM001778,L00057,Lead,CAM0058,Webinar Campaign 058,Webinar,No Show,True,2026-05-29,False,True,L00057
 CM001779,C00362,Contact,CAM0059,Content Syndication Campaign 059,Content Syndication,Responded,True,2026-04-20,False,False,C00362
 CM001780,L00051,Lead,CAM0012,Telemarketing Campaign 012,Telemarketing,Sent,False,2023-11-05,True,True,L00051
 CM001781,L00051,Lead,CAM0042,Advertisement Campaign 042,Advertisement,Sent,False,2025-12-14,True,True,L00051
@@ -1887,7 +1887,7 @@ CM001885,L00003,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-21,True
 CM001886,L00003,Lead,CAM0021,Advertisement Campaign 021,Advertisement,Sent,False,2023-08-13,True,True,L00003
 CM001887,L00003,Lead,CAM0030,Event Campaign 030,Event,Sent,False,2023-09-15,True,True,L00003
 CM001888,L00003,Lead,CAM0042,Advertisement Campaign 042,Advertisement,Clicked,True,2025-11-23,False,True,L00003
-CM001889,L00003,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,L00003
+CM001889,L00003,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,L00003
 CM001890,L00003,Lead,CAM0033,Advertisement Campaign 033,Advertisement,Sent,False,2023-04-04,True,False,L00003
 CM001891,L00003,Lead,CAM0051,Webinar Campaign 051,Webinar,Sent,False,2025-03-24,True,True,L00003
 CM001892,L00003,Lead,CAM0008,Email Campaign 008,Email,Sent,False,2023-04-26,True,False,L00003
@@ -1930,7 +1930,7 @@ CM001928,C00361,Contact,CAM0011,Webinar Campaign 011,Webinar,Registered,True,202
 CM001929,C00361,Contact,CAM0060,Event Campaign 060,Event,Sent,False,2026-04-30,True,True,C00361
 CM001930,C00361,Contact,CAM0033,Advertisement Campaign 033,Advertisement,Sent,False,2023-03-18,True,True,C00361
 CM001931,C00361,Contact,CAM0034,Webinar Campaign 034,Webinar,No Show,True,2024-05-29,False,True,C00361
-CM001932,C00361,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,C00361
+CM001932,C00361,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,C00361
 CM001933,C00361,Contact,CAM0020,Event Campaign 020,Event,Sent,False,2023-12-05,True,True,C00361
 CM001934,C00361,Contact,CAM0045,Email Campaign 045,Email,Sent,False,2025-05-10,True,True,C00361
 CM001935,L00291,Lead,CAM0039,Advertisement Campaign 039,Advertisement,Sent,False,2025-01-15,False,True,C00258
@@ -1973,7 +1973,7 @@ CM001971,L00530,Lead,CAM0050,Webinar Campaign 050,Webinar,Sent,False,2025-09-25,
 CM001972,L00288,Lead,CAM0012,Telemarketing Campaign 012,Telemarketing,Sent,False,2023-10-24,False,True,L00288
 CM001973,L00288,Lead,CAM0054,Email Campaign 054,Email,Sent,False,2025-12-23,True,True,L00288
 CM001974,L00288,Lead,CAM0049,Webinar Campaign 049,Webinar,Attended,True,2025-10-10,False,True,L00288
-CM001975,C00334,Contact,CAM0057,Event Campaign 057,Event,Registered,True,2026-05-28,False,True,C00334
+CM001975,C00334,Contact,CAM0057,Event Campaign 057,Event,Registered,True,2026-05-29,False,True,C00334
 CM001976,C00334,Contact,CAM0010,Content Syndication Campaign 010,Content Syndication,Clicked,True,2024-04-20,False,True,C00334
 CM001977,L00200,Lead,CAM0030,Event Campaign 030,Event,Attended,True,2023-09-12,False,True,C00139
 CM001978,C00265,Contact,CAM0059,Content Syndication Campaign 059,Content Syndication,Sent,False,2026-04-19,False,True,C00265
@@ -2070,7 +2070,7 @@ CM002068,C00357,Contact,CAM0010,Content Syndication Campaign 010,Content Syndica
 CM002069,C00357,Contact,CAM0028,Telemarketing Campaign 028,Telemarketing,Sent,False,2024-12-04,False,True,C00357
 CM002070,C00357,Contact,CAM0022,Event Campaign 022,Event,Sent,False,2024-05-22,True,True,C00357
 CM002071,C00357,Contact,CAM0025,Event Campaign 025,Event,Sent,False,2023-02-24,True,True,C00357
-CM002072,C00357,Contact,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-28,True,True,C00357
+CM002072,C00357,Contact,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-29,True,True,C00357
 CM002073,C00357,Contact,CAM0034,Webinar Campaign 034,Webinar,Sent,False,2024-05-20,True,True,C00357
 CM002074,C00357,Contact,CAM0027,Advertisement Campaign 027,Advertisement,Sent,False,2024-04-03,True,True,C00357
 CM002075,C00357,Contact,CAM0055,Advertisement Campaign 055,Advertisement,Sent,False,2025-09-22,True,True,C00357
@@ -2099,7 +2099,7 @@ CM002097,C00057,Contact,CAM0060,Event Campaign 060,Event,Registered,True,2026-04
 CM002098,C00057,Contact,CAM0007,Advertisement Campaign 007,Advertisement,Sent,False,2023-11-24,False,True,C00057
 CM002099,C00057,Contact,CAM0039,Advertisement Campaign 039,Advertisement,Sent,False,2025-01-10,False,True,C00057
 CM002100,C00057,Contact,CAM0035,Event Campaign 035,Event,Attended,True,2025-01-18,False,False,C00057
-CM002101,L00343,Lead,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-28,False,True,L00343
+CM002101,L00343,Lead,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-29,False,True,L00343
 CM002102,C00100,Contact,CAM0035,Event Campaign 035,Event,No Show,True,2025-01-09,False,False,C00100
 CM002103,C00100,Contact,CAM0002,Telemarketing Campaign 002,Telemarketing,Sent,False,2023-02-22,False,True,C00100
 CM002104,L00090,Lead,CAM0059,Content Syndication Campaign 059,Content Syndication,Sent,False,2026-05-01,True,True,L00090
@@ -2465,7 +2465,7 @@ CM002463,L00171,Lead,CAM0038,Email Campaign 038,Email,Sent,False,2023-02-17,True
 CM002464,L00171,Lead,CAM0038,Email Campaign 038,Email,Sent,False,2023-02-03,True,True,L00171
 CM002465,L00171,Lead,CAM0021,Advertisement Campaign 021,Advertisement,Sent,False,2023-08-30,True,True,L00171
 CM002466,L00171,Lead,CAM0016,Content Syndication Campaign 016,Content Syndication,Clicked,True,2023-09-18,False,True,L00171
-CM002467,C00382,Contact,CAM0057,Event Campaign 057,Event,No Show,True,2026-05-28,False,True,C00382
+CM002467,C00382,Contact,CAM0057,Event Campaign 057,Event,No Show,True,2026-05-29,False,True,C00382
 CM002468,C00382,Contact,CAM0050,Webinar Campaign 050,Webinar,Attended,True,2025-09-26,False,True,C00382
 CM002469,L00224,Lead,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-06,False,True,L00224
 CM002470,L00224,Lead,CAM0030,Event Campaign 030,Event,Registered,True,2023-09-13,False,True,L00224
@@ -2480,7 +2480,7 @@ CM002478,L00016,Lead,CAM0033,Advertisement Campaign 033,Advertisement,Sent,False
 CM002479,L00461,Lead,CAM0059,Content Syndication Campaign 059,Content Syndication,Clicked,True,2026-05-03,False,True,L00461
 CM002480,L00461,Lead,CAM0060,Event Campaign 060,Event,Attended,True,2026-05-12,False,True,L00461
 CM002481,L00461,Lead,CAM0059,Content Syndication Campaign 059,Content Syndication,Sent,False,2026-05-08,True,True,L00461
-CM002482,L00461,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,L00461
+CM002482,L00461,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,L00461
 CM002483,L00461,Lead,CAM0059,Content Syndication Campaign 059,Content Syndication,Sent,False,2026-05-01,True,True,L00461
 CM002484,L00461,Lead,CAM0060,Event Campaign 060,Event,Sent,False,2026-04-15,True,True,L00461
 CM002485,L00461,Lead,CAM0037,Email Campaign 037,Email,Sent,False,2024-03-09,True,True,L00461
@@ -2507,7 +2507,7 @@ CM002505,L00214,Lead,CAM0044,Event Campaign 044,Event,Attended,True,2025-10-05,F
 CM002506,L00214,Lead,CAM0036,Advertisement Campaign 036,Advertisement,Sent,False,2024-09-28,True,True,C00398
 CM002507,L00214,Lead,CAM0001,Email Campaign 001,Email,Sent,False,2024-10-08,True,True,C00398
 CM002508,C00146,Contact,CAM0060,Event Campaign 060,Event,Sent,False,2026-04-16,True,True,C00146
-CM002509,C00146,Contact,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-28,False,True,C00146
+CM002509,C00146,Contact,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-29,False,True,C00146
 CM002510,C00146,Contact,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-10,True,True,C00146
 CM002511,C00146,Contact,CAM0060,Event Campaign 060,Event,Sent,False,2026-04-24,True,True,C00146
 CM002512,C00146,Contact,CAM0028,Telemarketing Campaign 028,Telemarketing,Clicked,True,2024-12-03,False,True,C00146
@@ -2584,7 +2584,7 @@ CM002582,C00391,Contact,CAM0017,Content Syndication Campaign 017,Content Syndica
 CM002583,C00391,Contact,CAM0026,Telemarketing Campaign 026,Telemarketing,Sent,False,2023-12-18,True,True,C00391
 CM002584,C00391,Contact,CAM0030,Event Campaign 030,Event,Sent,False,2023-09-24,True,True,C00391
 CM002585,L00466,Lead,CAM0056,Webinar Campaign 056,Webinar,Registered,True,2026-05-08,False,True,L00466
-CM002586,C00177,Contact,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-28,False,True,C00177
+CM002586,C00177,Contact,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-29,False,True,C00177
 CM002587,L00550,Lead,CAM0059,Content Syndication Campaign 059,Content Syndication,Clicked,True,2026-04-23,False,True,L00550
 CM002588,C00070,Contact,CAM0060,Event Campaign 060,Event,Attended,True,2026-04-26,False,True,C00070
 CM002589,L00240,Lead,CAM0060,Event Campaign 060,Event,No Show,True,2026-05-08,False,True,C00344
@@ -2622,7 +2622,7 @@ CM002620,C00218,Contact,CAM0002,Telemarketing Campaign 002,Telemarketing,Clicked
 CM002621,C00307,Contact,CAM0060,Event Campaign 060,Event,Registered,True,2026-04-16,False,True,C00307
 CM002622,C00307,Contact,CAM0034,Webinar Campaign 034,Webinar,No Show,True,2024-06-01,False,False,C00307
 CM002623,C00307,Contact,CAM0013,Content Syndication Campaign 013,Content Syndication,Responded,True,2023-05-07,False,True,C00307
-CM002624,C00316,Contact,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-28,False,True,C00316
+CM002624,C00316,Contact,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-29,False,True,C00316
 CM002625,C00316,Contact,CAM0056,Webinar Campaign 056,Webinar,Registered,True,2026-05-06,False,False,C00316
 CM002626,C00316,Contact,CAM0021,Advertisement Campaign 021,Advertisement,Sent,False,2023-08-10,False,True,C00316
 CM002627,C00316,Contact,CAM0010,Content Syndication Campaign 010,Content Syndication,Clicked,True,2024-04-06,False,True,C00316
@@ -2676,7 +2676,7 @@ CM002674,L00336,Lead,CAM0018,Content Syndication Campaign 018,Content Syndicatio
 CM002675,L00336,Lead,CAM0053,Email Campaign 053,Email,Sent,False,2025-05-26,True,True,L00336
 CM002676,L00336,Lead,CAM0019,Webinar Campaign 019,Webinar,Sent,False,2024-06-25,True,False,L00336
 CM002677,L00336,Lead,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-13,False,True,L00336
-CM002678,L00336,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,L00336
+CM002678,L00336,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,L00336
 CM002679,L00336,Lead,CAM0034,Webinar Campaign 034,Webinar,Sent,False,2024-05-13,True,True,L00336
 CM002680,C00287,Contact,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-17,False,True,C00287
 CM002681,L00524,Lead,CAM0031,Email Campaign 031,Email,Sent,False,2024-02-24,True,True,L00524
@@ -2763,7 +2763,7 @@ CM002761,L00441,Lead,CAM0054,Email Campaign 054,Email,Sent,False,2025-12-28,True
 CM002762,L00441,Lead,CAM0052,Advertisement Campaign 052,Advertisement,Sent,False,2025-04-30,True,True,L00441
 CM002763,L00441,Lead,CAM0031,Email Campaign 031,Email,Sent,False,2024-02-14,True,True,L00441
 CM002764,L00441,Lead,CAM0052,Advertisement Campaign 052,Advertisement,Sent,False,2025-05-07,True,True,L00441
-CM002765,L00441,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,L00441
+CM002765,L00441,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,L00441
 CM002766,L00441,Lead,CAM0056,Webinar Campaign 056,Webinar,Sent,False,2026-04-24,True,True,L00441
 CM002767,L00441,Lead,CAM0050,Webinar Campaign 050,Webinar,Sent,False,2025-09-06,True,True,L00441
 CM002768,L00441,Lead,CAM0003,Event Campaign 003,Event,Sent,False,2023-11-04,True,True,L00441
@@ -2825,7 +2825,7 @@ CM002823,C00244,Contact,CAM0056,Webinar Campaign 056,Webinar,No Show,True,2026-0
 CM002824,L00196,Lead,CAM0010,Content Syndication Campaign 010,Content Syndication,Sent,False,2024-04-20,True,True,L00196
 CM002825,L00196,Lead,CAM0051,Webinar Campaign 051,Webinar,Sent,False,2025-03-19,True,True,L00196
 CM002826,L00196,Lead,CAM0035,Event Campaign 035,Event,Registered,True,2025-01-10,False,True,L00196
-CM002827,L00196,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,L00196
+CM002827,L00196,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,L00196
 CM002828,L00196,Lead,CAM0024,Advertisement Campaign 024,Advertisement,Sent,False,2024-03-21,True,True,L00196
 CM002829,L00196,Lead,CAM0043,Webinar Campaign 043,Webinar,Sent,False,2025-10-14,True,True,L00196
 CM002830,C00039,Contact,CAM0004,Advertisement Campaign 004,Advertisement,Sent,False,2023-12-07,False,True,C00039
@@ -2926,7 +2926,7 @@ CM002924,L00179,Lead,CAM0052,Advertisement Campaign 052,Advertisement,Sent,False
 CM002925,L00179,Lead,CAM0024,Advertisement Campaign 024,Advertisement,Sent,False,2024-04-11,True,True,L00179
 CM002926,L00179,Lead,CAM0048,Event Campaign 048,Event,Registered,True,2025-07-20,False,True,L00179
 CM002927,L00179,Lead,CAM0037,Email Campaign 037,Email,Sent,False,2024-03-29,True,True,L00179
-CM002928,L00179,Lead,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-28,False,True,L00179
+CM002928,L00179,Lead,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-29,False,True,L00179
 CM002929,L00179,Lead,CAM0010,Content Syndication Campaign 010,Content Syndication,Sent,False,2024-05-01,True,True,L00179
 CM002930,L00179,Lead,CAM0053,Email Campaign 053,Email,Sent,False,2025-05-15,True,True,L00179
 CM002931,L00179,Lead,CAM0034,Webinar Campaign 034,Webinar,Sent,False,2024-05-14,True,True,L00179
@@ -3162,7 +3162,7 @@ CM003160,L00579,Lead,CAM0022,Event Campaign 022,Event,Attended,True,2024-04-28,F
 CM003161,L00579,Lead,CAM0033,Advertisement Campaign 033,Advertisement,Sent,False,2023-03-16,False,True,L00579
 CM003162,C00114,Contact,CAM0008,Email Campaign 008,Email,Sent,False,2023-04-24,True,True,C00114
 CM003163,C00168,Contact,CAM0056,Webinar Campaign 056,Webinar,Registered,True,2026-04-15,False,True,C00168
-CM003164,C00168,Contact,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-28,False,True,C00168
+CM003164,C00168,Contact,CAM0057,Event Campaign 057,Event,Attended,True,2026-05-29,False,True,C00168
 CM003165,C00168,Contact,CAM0033,Advertisement Campaign 033,Advertisement,Sent,False,2023-03-15,False,True,C00168
 CM003166,C00168,Contact,CAM0008,Email Campaign 008,Email,Sent,False,2023-05-06,True,True,C00168
 CM003167,C00168,Contact,CAM0002,Telemarketing Campaign 002,Telemarketing,Sent,False,2023-03-05,True,False,C00168
@@ -3468,7 +3468,7 @@ CM003466,L00349,Lead,CAM0004,Advertisement Campaign 004,Advertisement,Sent,False
 CM003467,L00349,Lead,CAM0056,Webinar Campaign 056,Webinar,Sent,False,2026-05-10,True,True,L00349
 CM003468,L00349,Lead,CAM0017,Content Syndication Campaign 017,Content Syndication,Sent,False,2023-11-21,True,True,L00349
 CM003469,L00349,Lead,CAM0032,Webinar Campaign 032,Webinar,Sent,False,2023-05-24,True,True,L00349
-CM003470,L00349,Lead,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-28,False,True,L00349
+CM003470,L00349,Lead,CAM0058,Webinar Campaign 058,Webinar,Registered,True,2026-05-29,False,True,L00349
 CM003471,L00257,Lead,CAM0041,Email Campaign 041,Email,Sent,False,2025-05-02,True,True,L00257
 CM003472,L00305,Lead,CAM0060,Event Campaign 060,Event,Attended,True,2026-05-02,False,True,C00342
 CM003473,L00305,Lead,CAM0009,Webinar Campaign 009,Webinar,Registered,True,2024-08-01,False,True,C00342
@@ -3609,7 +3609,7 @@ CM003607,L00412,Lead,CAM0055,Advertisement Campaign 055,Advertisement,Sent,False
 CM003608,L00412,Lead,CAM0023,Webinar Campaign 023,Webinar,Sent,False,2024-05-20,True,True,C00358
 CM003609,L00412,Lead,CAM0009,Webinar Campaign 009,Webinar,Sent,False,2024-08-12,True,True,C00358
 CM003610,L00412,Lead,CAM0014,Content Syndication Campaign 014,Content Syndication,Sent,False,2024-11-27,True,True,C00358
-CM003611,L00412,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-28,True,True,C00358
+CM003611,L00412,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-29,True,True,C00358
 CM003612,L00412,Lead,CAM0001,Email Campaign 001,Email,Sent,False,2024-10-09,True,True,C00358
 CM003613,L00412,Lead,CAM0006,Telemarketing Campaign 006,Telemarketing,Sent,False,2023-04-15,True,True,C00358
 CM003614,L00295,Lead,CAM0007,Advertisement Campaign 007,Advertisement,Clicked,True,2023-12-06,False,True,L00295
@@ -3834,7 +3834,7 @@ CM003832,C00393,Contact,CAM0016,Content Syndication Campaign 016,Content Syndica
 CM003833,L00290,Lead,CAM0059,Content Syndication Campaign 059,Content Syndication,Clicked,True,2026-04-14,False,False,L00290
 CM003834,L00110,Lead,CAM0056,Webinar Campaign 056,Webinar,Sent,False,2026-04-13,True,False,C00151
 CM003835,L00110,Lead,CAM0059,Content Syndication Campaign 059,Content Syndication,Sent,False,2026-04-22,True,False,C00151
-CM003836,L00110,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-28,True,True,C00151
+CM003836,L00110,Lead,CAM0058,Webinar Campaign 058,Webinar,Sent,False,2026-05-29,True,True,C00151
 CM003837,L00110,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-09,True,True,C00151
 CM003838,L00110,Lead,CAM0059,Content Syndication Campaign 059,Content Syndication,Clicked,True,2026-05-01,False,True,C00151
 CM003839,L00110,Lead,CAM0051,Webinar Campaign 051,Webinar,Sent,False,2025-03-19,True,True,C00151
@@ -3929,7 +3929,7 @@ CM003927,L00097,Lead,CAM0036,Advertisement Campaign 036,Advertisement,Sent,False
 CM003928,C00125,Contact,CAM0060,Event Campaign 060,Event,Registered,True,2026-04-14,False,True,C00125
 CM003929,C00125,Contact,CAM0048,Event Campaign 048,Event,Registered,True,2025-07-20,False,True,C00125
 CM003930,C00125,Contact,CAM0041,Email Campaign 041,Email,Clicked,True,2025-05-08,False,True,C00125
-CM003931,L00536,Lead,CAM0058,Webinar Campaign 058,Webinar,Attended,True,2026-05-28,False,True,C00328
+CM003931,L00536,Lead,CAM0058,Webinar Campaign 058,Webinar,Attended,True,2026-05-29,False,True,C00328
 CM003932,L00536,Lead,CAM0032,Webinar Campaign 032,Webinar,No Show,True,2023-05-31,False,True,C00328
 CM003933,L00536,Lead,CAM0019,Webinar Campaign 019,Webinar,No Show,True,2024-06-30,False,True,C00328
 CM003934,L00102,Lead,CAM0060,Event Campaign 060,Event,Registered,True,2026-05-07,False,True,L00102
@@ -4955,11 +4955,11 @@ CM004953,L00367,Lead,CAM0014,Content Syndication Campaign 014,Content Syndicatio
 CM004954,L00486,Lead,CAM0014,Content Syndication Campaign 014,Content Syndication,Sent,False,2024-11-27,True,False,L00486
 CM004955,C00136,Contact,CAM0014,Content Syndication Campaign 014,Content Syndication,Sent,False,2024-11-27,True,True,C00136
 CM004956,C00358,Contact,CAM0014,Content Syndication Campaign 014,Content Syndication,Sent,False,2024-11-27,True,True,C00358
-CM004957,L00183,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-28,True,True,L00183
-CM004958,L00367,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-28,True,True,L00367
-CM004959,L00486,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-28,True,True,L00486
-CM004960,C00136,Contact,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-28,True,True,C00136
-CM004961,C00358,Contact,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-28,True,True,C00358
+CM004957,L00183,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-29,True,True,L00183
+CM004958,L00367,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-29,True,True,L00367
+CM004959,L00486,Lead,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-29,True,True,L00486
+CM004960,C00136,Contact,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-29,True,True,C00136
+CM004961,C00358,Contact,CAM0057,Event Campaign 057,Event,Sent,False,2026-05-29,True,True,C00358
 CM004962,L00183,Lead,CAM0001,Email Campaign 001,Email,Sent,False,2024-10-09,True,False,L00183
 CM004963,L00367,Lead,CAM0001,Email Campaign 001,Email,Sent,False,2024-10-09,True,True,L00367
 CM004964,L00486,Lead,CAM0001,Email Campaign 001,Email,Sent,False,2024-10-09,True,True,L00486
@@ -5183,11 +5183,11 @@ CM005181,L00341,Lead,CAM0047,Advertisement Campaign 047,Advertisement,Sent,False
 CM005182,L00515,Lead,CAM0047,Advertisement Campaign 047,Advertisement,Sent,False,2025-07-08,True,True,L00515
 CM005183,C00059,Contact,CAM0047,Advertisement Campaign 047,Advertisement,Sent,False,2025-07-08,True,True,C00059
 CM005184,C00118,Contact,CAM0047,Advertisement Campaign 047,Advertisement,Sent,False,2025-07-08,True,True,C00118
-CM005185,C00031,Contact,CAM0056,,Webinar,Attended,,2026-04-18,False,,C00031
-CM005186,C00031,Contact,CAM0057,,Event,Attended,,2026-05-09,False,,C00031
-CM005187,C00031,Contact,CAM0058,,Webinar,Attended,,2026-05-11,False,,C00031
-CM005188,C00031,Contact,CAM0059,,Content Syndication,Clicked,,2026-04-19,False,,C00031
-CM005189,C00031,Contact,CAM0060,,Event,Attended,,2026-04-21,False,,C00031
+CM005185,L00014,Lead,CAM0056,,Webinar,Attended,,2026-04-18,False,,L00014
+CM005186,L00014,Lead,CAM0057,,Event,Attended,,2026-05-09,False,,L00014
+CM005187,L00014,Lead,CAM0058,,Webinar,Attended,,2026-05-11,False,,L00014
+CM005188,L00014,Lead,CAM0059,,Content Syndication,Clicked,,2026-04-19,False,,L00014
+CM005189,L00014,Lead,CAM0060,,Event,Attended,,2026-04-21,False,,L00014
 CM005190,C00002,Contact,CAM0056,,Webinar,Attended,,2026-04-15,False,,C00002
 CM005191,C00002,Contact,CAM0057,,Event,Attended,,2026-05-05,False,,C00002
 CM005192,C00002,Contact,CAM0058,,Webinar,Attended,,2026-05-05,False,,C00002

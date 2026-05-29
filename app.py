@@ -111,6 +111,13 @@ ENGAGEMENT_TYPE_COLORS = {
     "Advertisement": "#ec4899",
 }
 
+# Mirror of backend/pipeline/02_features.py — kept in sync for the in-app calculation view.
+ENG_TYPE_WEIGHTS = {"Event": 0.30, "Webinar": 0.25, "Content Syndication": 0.20,
+                    "Telemarketing": 0.10, "Email": 0.10, "Advertisement": 0.05}
+ENG_TYPE_CAPS = {"Event": 3, "Webinar": 5, "Content Syndication": 5,
+                 "Telemarketing": 5, "Email": 10, "Advertisement": 10}
+ENG_HALF_LIFE = 30
+
 
 def _engagement_breakdown(row: dict) -> dict:
     """Decompose the engagement score for display below the sunburst:
@@ -150,6 +157,66 @@ def _engagement_breakdown(row: dict) -> dict:
         "days_since_last": (int(dsl) if (dsl is not None and has_events) else None),
         "automation_share": float(row.get("automation_share") or 0),
         "automation_inflated": bool(row.get("automation_inflated_flag")),
+    }
+
+
+def _engagement_calc(row: dict) -> dict | None:
+    """Full per-record engagement calculation, reconstructed exactly from committed data.
+
+    Per type: contribution = weight x recency(0-100) x volume(0-100), where
+    recency = 2^(-age_days/half_life) (max over the person's genuine events) and
+    volume  = min(events/cap, 1). Volume counts come from the person's genuine
+    campaign members; recency is recovered from the stored per-type contribution so
+    the displayed math reproduces the committed engagement_score on any run date.
+    """
+    type_keys = ["event", "webinar", "content_syndication", "telemarketing", "email", "advertisement"]
+    type_lbls = ["Event", "Webinar", "Content Syndication", "Telemarketing", "Email", "Advertisement"]
+
+    vol: dict = {}
+    if _cm is not None and not _cm.empty:
+        sid = row.get("scoring_person_id") or row.get("record_id")
+        g = _cm[(_cm["scoring_person_id"] == sid) & (_cm["member_status"] != "Sent")]
+        vol = g.groupby("campaign_type").size().to_dict()
+
+    raw_signal = float(row.get("raw_engagement_signal") or 0)
+    rows = []
+    for k, lbl in zip(type_keys, type_lbls):
+        contrib = float(row.get(f"eng_{k}") or 0)
+        share = (contrib / raw_signal * 100) if raw_signal > 1e-9 else 0.0
+        if share < 0.5:  # drop negligible decayed events — keep the table aligned with the bar
+            continue
+        v = int(vol.get(lbl, 0))
+        cap = ENG_TYPE_CAPS[lbl]
+        w = ENG_TYPE_WEIGHTS[lbl]
+        vol_score = min(v / cap, 1.0) * 100 if cap else 0.0
+        recency = (contrib / (w * vol_score)) if (w > 0 and vol_score > 0) else 0.0
+        rows.append({
+            "label": lbl, "weight": w, "recency": recency,
+            "volume": v, "cap": cap, "volume_score": vol_score,
+            "contribution": contrib, "color": ENGAGEMENT_TYPE_COLORS.get(lbl, "#4f7cff"),
+        })
+    if not rows:
+        return None
+    rows.sort(key=lambda d: d["contribution"], reverse=True)
+
+    etype = row.get("entity_type") or "Lead"
+    ceiling = 0.0
+    if _ranked is not None and "raw_engagement_signal" in _ranked.columns:
+        same = _ranked[_ranked["entity_type"] == etype]["raw_engagement_signal"].dropna()
+        if len(same):
+            ceiling = float(same.quantile(0.95))
+    eng_score = float(row.get("engagement_score") or 0)
+    weight = float(row.get("engagement_weight") or 0.60)
+    return {
+        "type_rows": rows,
+        "genuine_total": int(row.get("meaningful_count") or 0),
+        "raw_signal": raw_signal,
+        "ceiling": ceiling,
+        "entity_type": etype,
+        "normalized": eng_score,
+        "weight": weight,
+        "weighted": eng_score * weight,
+        "half_life": ENG_HALF_LIFE,
     }
 
 
@@ -515,7 +582,8 @@ def record_detail(record_id: str):
     back_url = request.referrer or url_for("queue")
 
     return render_template("record.html", r=r, engagement=engagement, sunburst_html=sunburst,
-                           engagement_breakdown=_engagement_breakdown(r), back_url=back_url)
+                           engagement_breakdown=_engagement_breakdown(r),
+                           engagement_calc=_engagement_calc(r), back_url=back_url)
 
 
 @app.route("/methodology")

@@ -144,6 +144,53 @@
         {% if eb.automation_inflated %}
         <div class="dq-warn">Automation-inflated: &gt;70% of events are automated sends — engagement signal discounted.</div>
         {% endif %}
+
+        {% if engagement_calc %}
+        {% set ec = engagement_calc %}
+        <details style="margin-top:14px">
+          <summary style="cursor:pointer;font-size:.82rem;color:var(--accent);user-select:none">Show full engagement calculation</summary>
+          <div style="margin-top:10px;font-size:.8rem;color:var(--text2)">
+            <div style="color:var(--text3);margin-bottom:10px;line-height:1.5">
+              Per type: <span class="mono">contribution = weight × recency × volume</span>, where
+              <span class="mono">recency = 2^(−age/{{ ec.half_life }}d) × 100</span> (max over events) and
+              <span class="mono">volume = min(events ÷ cap, 1) × 100</span>. Automated “Sent” events excluded.
+              {{ ec.genuine_total }} genuine event(s) counted.
+            </div>
+            <div class="tbl-wrap" style="border:none">
+              <table>
+                <thead>
+                  <tr><th>Type</th><th>Weight</th><th>Recency</th><th>Volume</th><th style="text-align:right">Contribution</th></tr>
+                </thead>
+                <tbody>
+                  {% for t in ec.type_rows %}
+                  <tr style="cursor:default">
+                    <td><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:{{ t.color }};margin-right:6px"></span>{{ t.label }}</td>
+                    <td class="mono">{{ "%.2f"|format(t.weight) }}</td>
+                    <td class="mono">{{ "%.0f"|format(t.recency) }}</td>
+                    <td class="mono">{{ t.volume }}/{{ t.cap }} → {{ "%.0f"|format(t.volume_score) }}</td>
+                    <td class="mono" style="text-align:right">{{ "%.1f"|format(t.contribution) }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="bdown" style="margin-top:12px;gap:8px">
+              <div style="display:flex;justify-content:space-between;gap:10px">
+                <span>Raw engagement signal (Σ contributions)</span>
+                <span class="mono">{{ "%.1f"|format(ec.raw_signal) }}</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;gap:10px">
+                <span>Normalize: min(raw ÷ {{ ec.entity_type }} 95th-pct {{ "%.1f"|format(ec.ceiling) }}, 1) × 100</span>
+                <span class="mono">{{ "%.1f"|format(ec.normalized) }}</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--bg3);padding-top:8px">
+                <span><strong style="color:var(--text)">× engagement weight {{ "%.2f"|format(ec.weight) }}</strong></span>
+                <span class="mono" style="color:var(--accent)">{{ "%.1f"|format(ec.weighted) }} pts → final</span>
+              </div>
+            </div>
+          </div>
+        </details>
+        {% endif %}
       </div>
       {% endif %}
     </div>
